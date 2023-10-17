@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace HITSBackEnd.baseClasses
 {
-    public class User: IdentityUser
+    public class User
     {
+        [Key]
+        public Guid Id { get; set; }
         public string FullName { get; set; }
         public DateTime BirthData { get; set; }
         public Gender Gender { get; set; }
