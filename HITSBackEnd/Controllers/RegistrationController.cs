@@ -18,7 +18,7 @@ namespace HITSBackEnd.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] User request)
         {
-        _userRegistration.registrateUser(request);
+        _userRegistration.RegistrateUser();
 
         return Ok("Registration successful");
 

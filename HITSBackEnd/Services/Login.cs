@@ -11,7 +11,7 @@ namespace HITSBackEnd.Services
     {
         public string LogIn(string email, string password)
         {
-
+            return "bruh";
         }
     }
 }
