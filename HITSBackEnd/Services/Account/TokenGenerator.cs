@@ -3,11 +3,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace HITSBackEnd.Services
+namespace HITSBackEnd.Services.Account
 {
     public class TokenGenerator
     {
-        public static string GenerateToken(string email, string password)
+        public static string GenerateToken(string email, string name)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes("vxUMx5pLcH1sTJuz6IoC4tbvheq7MsEN");

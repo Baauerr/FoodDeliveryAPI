@@ -9,6 +9,7 @@
       "HITSBackEnd/1.0.0": {
         "dependencies": {
           "Microsoft.AspNet.Identity.Owin": "2.2.4",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.23",
           "Microsoft.EntityFrameworkCore": "7.0.12",
           "Microsoft.EntityFrameworkCore.Design": "7.0.12",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.12",
@@ -84,6 +85,17 @@
           "lib/net45/Microsoft.AspNet.Identity.Owin.dll": {
             "assemblyVersion": "2.0.0.0",
             "fileVersion": "2.2.4.50621"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.23": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.24.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
+            "assemblyVersion": "6.0.23.0",
+            "fileVersion": "6.0.2323.48007"
           }
         }
       },
@@ -828,6 +840,13 @@
       "sha512": "sha512-u3SmsjXT/43Xas/xJx4Mz9FImMxfxz9npmFLXRDc8j7Ni3vkoRNK9zryx3i60WVPIxnVlJsJcCe6PaBuPJJscw==",
       "path": "microsoft.aspnet.identity.owin/2.2.4",
       "hashPath": "microsoft.aspnet.identity.owin.2.2.4.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.23": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-T/TfelJX4wpENzYXIZ5mo/SpqBNTNWmuDpIXMnWF0fcBKCjB+JcOmD3hNW8tdw4/05/fs3rhtvrOuVl0D+6x1Q==",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/6.0.23",
+      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.6.0.23.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
       "type": "package",

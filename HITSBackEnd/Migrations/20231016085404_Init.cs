@@ -27,13 +27,27 @@ namespace HITSBackEnd.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+            migrationBuilder.DropColumn(
+                name: "Id",
+                table: "Users");
+            migrationBuilder.RenameColumn(
+                name: "Phone",
+                table: "Users",
+                newName: "PhoneNumber");
+            migrationBuilder.RenameColumn(
+                name: "BirthData",
+                table: "Users",
+                newName: "BirthDate");
+            migrationBuilder.AddColumn<string>(
+                name: "Password",
+                table: "Users",
+                nullable: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Users");
+            
         }
     }
 }

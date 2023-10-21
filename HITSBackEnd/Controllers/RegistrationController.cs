@@ -1,5 +1,5 @@
 ﻿using HITSBackEnd.baseClasses;
-using HITSBackEnd.Services;
+using HITSBackEnd.Services.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,11 +16,33 @@ namespace HITSBackEnd.Controllers
             _userRegistration = userRegistration;
         }
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User request)
+        public IActionResult Register([FromBody] Users request)
         {
-        _userRegistration.RegistrateUser();
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Invalid request data");
+                }
+                _userRegistration.RegistrateUser(
+                    request.FullName,
+                    request.Password,
+                    request.Email,
+                    request.Address,
+                    request.BirthDate,
+                    request.Gender,
+                    request.PhoneNumber
+                );
+                string token = TokenGenerator.GenerateToken(request.Email, request.FullName);
 
-        return Ok("Registration successful");
+                var result = new { token = token };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
     }
