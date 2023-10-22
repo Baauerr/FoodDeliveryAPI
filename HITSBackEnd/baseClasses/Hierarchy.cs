@@ -4,7 +4,7 @@
     {
         public int Id {  get; set; }
         public int ObjectId { get; set; }
-        public (?) ParentObjId {  get; set; }
+        public AdressElement ParentObjId {  get; set; }
         public bool IsActive {  get; set; }
     }
 }
