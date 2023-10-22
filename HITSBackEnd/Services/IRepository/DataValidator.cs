@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace HITSBackEnd.Services.Account
+namespace HITSBackEnd.Services.IRepository
 {
     public class DataValidator
     {

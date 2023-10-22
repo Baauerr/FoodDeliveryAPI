@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "q2KSf6Vq9M8Sh3nYbNmqIbh/E9egeBoOrNL9QT7X9jtxCUgGvfsmfRHeCHiZRCVhn+cQrMBTte5LWi6Ow7Cezg==",
+  "dgSpecHash": "FyBgH5sPHi1u4UFAtTAQr3KqrjrGMAQCe2/q1L292YiR8qhRjQ0Nzo6lIkAhytHPzjLSUbpjhPLro71q02j9Hw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Артем\\source\\repos\\webNET-Hits-backend-aspnet-project-1\\HITSBackEnd\\HITSBackEnd.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "C:\\Users\\Артем\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.11\\npgsql.entityframeworkcore.postgresql.7.0.11.nupkg.sha512",
     "C:\\Users\\Артем\\.nuget\\packages\\owin\\1.0.0\\owin.1.0.0.nupkg.sha512",
     "C:\\Users\\Артем\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "C:\\Users\\Артем\\.nuget\\packages\\swashbuckle.aspnetcore.annotations\\6.5.0\\swashbuckle.aspnetcore.annotations.6.5.0.nupkg.sha512",
     "C:\\Users\\Артем\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
     "C:\\Users\\Артем\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
     "C:\\Users\\Артем\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512",

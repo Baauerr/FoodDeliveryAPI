@@ -96,3 +96,4 @@ C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEn
 C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Owin.dll
 C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll

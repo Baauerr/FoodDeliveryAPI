@@ -1,33 +1,38 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using HITSBackEnd.DataBase;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace HITSBackEnd.Services.Account
+namespace HITSBackEnd.Services.IRepository
 {
     public class TokenGenerator
     {
-        public static string GenerateToken(string email, string name)
+        private string secretKey;
+
+        public TokenGenerator(IConfiguration configuration)
+        {
+            secretKey = configuration.GetValue<string>("ApiSettings:SecretKey");
+        }
+        public string GenerateToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes("vxUMx5pLcH1sTJuz6IoC4tbvheq7MsEN");
+            var key = Encoding.ASCII.GetBytes(secretKey);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 NotBefore = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = "HITSBackEnd",
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, email)
                 }),
-                Audience = "123"
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
-        }
+       }
     }
 }

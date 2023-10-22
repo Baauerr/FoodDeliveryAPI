@@ -1,13 +1,14 @@
 using HITSBackEnd.DataBase;
 using HITSBackEnd.Services;
 using HITSBackEnd.Services.Account;
+using HITSBackEnd.Services.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -17,30 +18,37 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<Registration>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddControllers();
+builder.Services.AddScoped<TokenGenerator>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 8;
+});
+
+var key = builder.Configuration.GetValue<string>("ApiSettings:SecretKey");
+
 
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     }).AddJwtBearer(o =>
     {
+        o.RequireHttpsMetadata = false;
+        o.SaveToken = true;
         o.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = "HITSBackEnd",
-            ValidateIssuer = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("vxUMx5pLcH1sTJuz6IoC4tbvheq7MsEN")),
+            ValidateIssuer = false,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
             ValidateIssuerSigningKey = true,
-            ValidateLifetime = true,
-            LifetimeValidator = (before, expires, token, parameters) =>
-            {
-                var utcNow = DateTime.UtcNow;
-                return before <= utcNow && utcNow < expires;
-            },
-            ValidAudience = "123",
-            ValidateAudience = true
+            ValidateLifetime = false,
+           
         };
     });
 
@@ -55,9 +63,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
