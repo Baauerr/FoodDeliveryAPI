@@ -36,10 +36,10 @@ namespace HITSBackEnd.Services.Account.IRepository
 
         public async Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
-            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == loginRequestDTO.Email.ToLower() &&
-            PasswordValidatoring.VerifyPassword(u.Password, loginRequestDTO.Password));
+            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == loginRequestDTO.Email);
 
-            if (user == null)
+
+            if (user == null || !PasswordValidatoring.VerifyPassword(user.Password, loginRequestDTO.Password))
             {
                 throw new Exception(ErrorCreator.CreateError("Неверный email или пароль"));
             }

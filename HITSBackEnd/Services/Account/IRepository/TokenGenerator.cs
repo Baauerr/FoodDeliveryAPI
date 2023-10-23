@@ -1,4 +1,5 @@
 ﻿using HITSBackEnd.DataBase;
+using Microsoft.AspNet.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,8 +27,9 @@ namespace HITSBackEnd.Services.Account.IRepository
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, email)
+                new Claim(ClaimTypes.Name, email)
                 }),
+                Issuer = "HITSBackend", 
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
