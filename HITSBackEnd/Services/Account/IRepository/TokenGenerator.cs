@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace HITSBackEnd.Services.IRepository
+namespace HITSBackEnd.Services.Account.IRepository
 {
     public class TokenGenerator
     {
@@ -33,6 +33,6 @@ namespace HITSBackEnd.Services.IRepository
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
-       }
+        }
     }
 }

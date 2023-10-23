@@ -1,5 +1,5 @@
 ﻿using HITSBackEnd.Dto;
-using HITSBackEnd.Services.IRepository;
+using HITSBackEnd.Services.Account.IRepository;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

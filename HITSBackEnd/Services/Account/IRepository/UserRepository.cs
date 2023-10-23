@@ -3,6 +3,7 @@ using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,9 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 
-namespace HITSBackEnd.Services.IRepository
+namespace HITSBackEnd.Services.Account.IRepository
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _db;
         private string secretKey;
@@ -35,8 +36,8 @@ namespace HITSBackEnd.Services.IRepository
 
         public async Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
-            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower()==loginRequestDTO.Email.ToLower() &&
-            u.Password == loginRequestDTO.Password);
+            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == loginRequestDTO.Email.ToLower() &&
+            PasswordValidatoring.VerifyPassword(u.Password, loginRequestDTO.Password));
 
             if (user == null)
             {
@@ -53,7 +54,7 @@ namespace HITSBackEnd.Services.IRepository
         {
             if (IsUniqueUser(registrationRequestDTO.Email))
             {
-               throw new Exception(ErrorCreator.CreateError("Пользователь с таким email уже существует"));
+                throw new Exception(ErrorCreator.CreateError("Пользователь с таким email уже существует"));
             }
             if (!DataValidator.ValidatePhoneNumber(registrationRequestDTO.PhoneNumber))
             {
@@ -79,11 +80,11 @@ namespace HITSBackEnd.Services.IRepository
             };
             return response;
         }
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+            var passwordHasher = new PasswordHasher<string>();
+            return passwordHasher.HashPassword("2023", password);
         }
 
-       
     }
 }
