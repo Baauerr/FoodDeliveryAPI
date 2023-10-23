@@ -11,7 +11,7 @@ namespace HITSBackEnd.Swagger
             var errorModel = new ErrorResponseModel
             {
                 status = HttpStatusCode.BadRequest,
-                message = "message"
+                message = message
             };
 
             var errorJson = JsonConvert.SerializeObject(errorModel);
