@@ -87,5 +87,22 @@ namespace HITSBackEnd.Services.Account.IRepository
             var passwordHasher = new PasswordHasher<string>();
             return passwordHasher.HashPassword("2023", password);
         }
+
+        public ProfileResponseDTO Profile(string email)
+        {
+            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+
+                ProfileResponseDTO response = new ProfileResponseDTO
+                {
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    BirthDate = user.BirthDate,
+                    Gender = user.Gender,
+                    PhoneNumber = user.PhoneNumber,
+                    Email = user.Email,
+                    Address = user.Address,
+                };
+                return response;
+            }
     }
 }
