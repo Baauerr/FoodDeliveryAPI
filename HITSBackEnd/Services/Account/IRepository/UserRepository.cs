@@ -1,7 +1,9 @@
-﻿using HITSBackEnd.baseClasses;
+﻿using Azure;
+using HITSBackEnd.baseClasses;
 using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto;
 using HITSBackEnd.Swagger;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -85,6 +87,5 @@ namespace HITSBackEnd.Services.Account.IRepository
             var passwordHasher = new PasswordHasher<string>();
             return passwordHasher.HashPassword("2023", password);
         }
-
     }
 }

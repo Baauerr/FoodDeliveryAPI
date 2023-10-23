@@ -5,6 +5,7 @@ namespace HITSBackEnd.baseClasses
 {
     public class Users
     {
+        public Guid Id { get; set; }
         public string FullName { get; set; }
 
         [DataType(DataType.Password)]

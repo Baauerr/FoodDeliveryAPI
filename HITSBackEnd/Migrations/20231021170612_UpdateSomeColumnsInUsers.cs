@@ -36,6 +36,13 @@ namespace HITSBackEnd.Migrations
                 nullable: false,
                 defaultValue: "");
 
+            migrationBuilder.AddColumn<string>(
+                name: "Id",
+                table: "Users",
+                type: "Guid",
+                nullable: false,
+                defaultValue: "");
+
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Users",
                 table: "Users",

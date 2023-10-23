@@ -1,6 +1,7 @@
 ﻿using HITSBackEnd.Dto;
 using HITSBackEnd.Services.Account.IRepository;
 using HITSBackEnd.Swagger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -15,7 +16,6 @@ namespace HITSBackEnd.Controllers
         {
             _userRepository = userRepository;
         }
-
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
