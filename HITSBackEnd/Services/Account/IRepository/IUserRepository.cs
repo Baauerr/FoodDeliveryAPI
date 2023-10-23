@@ -9,6 +9,7 @@ namespace HITSBackEnd.Services.Account.IRepository
         bool IsUniqueUser(string email);
         Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
         Task<RegistrationLoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO);
+        public ProfileResponseDTO Profile( string name);
 
     }
 }

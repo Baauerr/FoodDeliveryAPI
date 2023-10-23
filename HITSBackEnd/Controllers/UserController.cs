@@ -34,5 +34,13 @@ namespace HITSBackEnd.Controllers
             var RegistrationLoginResponceDTO = await _userRepository.Register(model);
             return Ok(RegistrationLoginResponceDTO);
         }
+        [HttpGet("profile")]
+        [Authorize]
+        public IActionResult GetProfile()
+        {
+            var ProfileResponseDTO = _userRepository.Profile(User.Identity.Name);
+            return Ok(ProfileResponseDTO);
+        }
+        
     }
 }
