@@ -47,6 +47,17 @@ namespace HITSBackEnd.Migrations
                 name: "PK_Users",
                 table: "Users",
                 column: "Email");
+            migrationBuilder.CreateTable(
+        name: "BlackListTokens", 
+        columns: table => new
+        {
+            userEmail = table.Column<string>(nullable: false),
+            Token = table.Column<string>(nullable: false)
+        },
+        constraints: table =>
+        {
+            migrationBuilder.AddPrimaryKey("PK_BlackListTokens", "userEmail", "Token");
+        });
         }
 
         /// <inheritdoc />

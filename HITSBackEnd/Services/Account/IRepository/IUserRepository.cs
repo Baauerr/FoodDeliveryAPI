@@ -11,5 +11,7 @@ namespace HITSBackEnd.Services.Account.IRepository
         Task<RegistrationLoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO);
         public ProfileResponseDTO Profile( string name);
 
+        public void LogOut(string name, string email);
+
     }
 }

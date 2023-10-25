@@ -104,5 +104,14 @@ namespace HITSBackEnd.Services.Account.IRepository
                 };
                 return response;
             }
+
+        public void LogOut(string token, string email)
+        {
+            BlackListToken newToken = new BlackListToken();
+            newToken.Token = token;
+            newToken.userEmail = email;
+            _db.blackListTokens.Add(newToken);
+            _db.SaveChanges();
+        }
     }
 }

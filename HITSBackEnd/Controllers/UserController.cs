@@ -1,4 +1,6 @@
-﻿using HITSBackEnd.Dto;
+﻿using HITSBackEnd.Controllers.AttributeUsage;
+using HITSBackEnd.DataBase;
+using HITSBackEnd.Dto;
 using HITSBackEnd.Services.Account.IRepository;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
@@ -36,11 +38,23 @@ namespace HITSBackEnd.Controllers
         }
         [HttpGet("profile")]
         [Authorize]
+        [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult GetProfile()
         {
             var ProfileResponseDTO = _userRepository.Profile(User.Identity.Name);
             return Ok(ProfileResponseDTO);
         }
-        
+
+        [HttpGet("logout")]
+        [Authorize]
+        [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        public IActionResult LogOut()
+        {
+            string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            string email = User.Identity.Name;
+            _userRepository.LogOut(token, email);
+            return Ok();
+        }
+
     }
 }
