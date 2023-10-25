@@ -1,3 +1,4 @@
+using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataBase;
 using HITSBackEnd.Services;
 using HITSBackEnd.Services.Account;
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<TokenBlacklistFilterAttribute>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
