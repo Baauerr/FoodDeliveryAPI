@@ -1,7 +1,7 @@
 ﻿using HITSBackEnd.baseClasses;
 using System.ComponentModel.DataAnnotations;
 
-namespace HITSBackEnd.Dto
+namespace HITSBackEnd.Dto.UserDTO
 {
     public class ProfileResponseDTO
     {

@@ -2,7 +2,7 @@ using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataBase;
 using HITSBackEnd.Services;
 using HITSBackEnd.Services.Account;
-using HITSBackEnd.Services.Account.IRepository;
+using HITSBackEnd.Services.UserRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,8 @@
 ﻿using Azure;
 using HITSBackEnd.baseClasses;
 using HITSBackEnd.DataBase;
-using HITSBackEnd.Dto;
+using HITSBackEnd.Dto.UserDTO;
+using HITSBackEnd.Services.Account;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.DataProtection;
@@ -16,7 +17,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 
-namespace HITSBackEnd.Services.Account.IRepository
+namespace HITSBackEnd.Services.UserRepository
 {
     public class UserRepository : IUserRepository
     {
@@ -92,18 +93,18 @@ namespace HITSBackEnd.Services.Account.IRepository
         {
             var user = _db.Users.FirstOrDefault(u => u.Email == email);
 
-                ProfileResponseDTO response = new ProfileResponseDTO
-                {
-                    Id = user.Id,
-                    FullName = user.FullName,
-                    BirthDate = user.BirthDate,
-                    Gender = user.Gender,
-                    PhoneNumber = user.PhoneNumber,
-                    Email = user.Email,
-                    Address = user.Address,
-                };
-                return response;
-            }
+            ProfileResponseDTO response = new ProfileResponseDTO
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                BirthDate = user.BirthDate,
+                Gender = user.Gender,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                Address = user.Address,
+            };
+            return response;
+        }
 
         public void LogOut(string token, string email)
         {
@@ -118,7 +119,7 @@ namespace HITSBackEnd.Services.Account.IRepository
         {
             var user = _db.Users.FirstOrDefault(u => u.Email == email);
 
-            user.FullName = userUpdateData.FullName ?? user.FullName;  
+            user.FullName = userUpdateData.FullName ?? user.FullName;
             user.BirthDate = userUpdateData.BirthDate ?? user.BirthDate;
             user.Gender = userUpdateData.Gender ?? user.Gender;
             user.Address = userUpdateData.AddressId ?? user.Address;

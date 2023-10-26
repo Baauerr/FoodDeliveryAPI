@@ -1,6 +1,4 @@
-﻿
-
-namespace HITSBackEnd.Dto
+﻿namespace HITSBackEnd.Dto.UserDTO
 {
     public class RegistrationLoginResponseDTO
     {

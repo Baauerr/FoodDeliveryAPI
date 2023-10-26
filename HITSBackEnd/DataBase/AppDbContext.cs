@@ -1,5 +1,5 @@
-﻿using HITSBackEnd.baseClasses;
-using HITSBackEnd.Services.Account;
+﻿using HITSBackEnd.Services.Account;
+using HITSBackEnd.Services.UserRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace HITSBackEnd.DataBase

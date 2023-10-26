@@ -1,13 +1,13 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataBase;
-using HITSBackEnd.Dto;
-using HITSBackEnd.Services.Account.IRepository;
+using HITSBackEnd.Dto.UserDTO;
+using HITSBackEnd.Services.UserRepository;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace HITSBackEnd.Controllers
+namespace HITSBackEnd.Controllers.UserController
 {
     [Route("api/account")]
     public class UserController : Controller
@@ -41,7 +41,7 @@ namespace HITSBackEnd.Controllers
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult GetProfile()
         {
-            var ProfileResponseDTO =  _userRepository.Profile(User.Identity.Name);
+            var ProfileResponseDTO = _userRepository.Profile(User.Identity.Name);
             return Ok(ProfileResponseDTO);
         }
 

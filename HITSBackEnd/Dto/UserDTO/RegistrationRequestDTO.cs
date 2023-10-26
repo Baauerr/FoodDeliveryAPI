@@ -1,20 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using HITSBackEnd.baseClasses;
 using System.ComponentModel.DataAnnotations;
 
-namespace HITSBackEnd.baseClasses
+namespace HITSBackEnd.Dto.UserDTO
 {
-    public class Users
+    public class RegistrationRequestDTO
     {
-        public Guid Id { get; set; }
         public string FullName { get; set; }
-
-        [DataType(DataType.Password)]
-        public string Password { get; set; }    
+        public string Password { get; set; }
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
         public string PhoneNumber { get; set; }
-
-        [Key]
         [DataType(DataType.EmailAddress)]
         [EmailAddress(ErrorMessage = "Неправильный формат адреса электронной почты.")]
         public string Email { get; set; }
