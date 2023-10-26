@@ -113,5 +113,24 @@ namespace HITSBackEnd.Services.Account.IRepository
             _db.blackListTokens.Add(newToken);
             _db.SaveChanges();
         }
+
+        public void EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email)
+        {
+            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+
+            user.FullName = userUpdateData.FullName ?? user.FullName;  
+            user.BirthDate = userUpdateData.BirthDate ?? user.BirthDate;
+            user.Gender = userUpdateData.Gender ?? user.Gender;
+            user.Address = userUpdateData.AddressId ?? user.Address;
+            if (userUpdateData.PhoneNumber != null)
+            {
+                if (DataValidator.ValidatePhoneNumber(userUpdateData.PhoneNumber))
+                {
+                    user.PhoneNumber = userUpdateData.PhoneNumber;
+                }
+            }
+
+            _db.SaveChanges();
+        }
     }
 }

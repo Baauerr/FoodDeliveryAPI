@@ -41,7 +41,7 @@ namespace HITSBackEnd.Controllers
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult GetProfile()
         {
-            var ProfileResponseDTO = _userRepository.Profile(User.Identity.Name);
+            var ProfileResponseDTO =  _userRepository.Profile(User.Identity.Name);
             return Ok(ProfileResponseDTO);
         }
 
@@ -56,5 +56,14 @@ namespace HITSBackEnd.Controllers
             return Ok();
         }
 
+        [HttpPut("profile")]
+        [Authorize]
+        [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        public IActionResult editUserProfile([FromBody] EditUserInfoRequestDTO model)
+        {
+            string email = User.Identity.Name;
+            _userRepository.EditUserInfo(model, email);
+            return Ok();
+        }
     }
 }

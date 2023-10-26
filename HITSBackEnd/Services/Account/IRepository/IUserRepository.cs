@@ -13,5 +13,6 @@ namespace HITSBackEnd.Services.Account.IRepository
 
         public void LogOut(string name, string email);
 
+        public void EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email);
     }
 }
