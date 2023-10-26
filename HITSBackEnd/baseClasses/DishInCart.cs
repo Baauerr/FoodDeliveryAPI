@@ -2,6 +2,7 @@
 {
     public class DishInCart
     {
-        public int count { get; set; }
+        public string DishId { get; set; }
+        public int Count { get; set; }
     }
 }
