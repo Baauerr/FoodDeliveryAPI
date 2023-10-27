@@ -16,7 +16,7 @@ namespace HITSBackEnd.Controllers.AttributeUsage
 
         public bool IsTokenInBlacklist(string token)
         {
-            return _tokenBlacklist.blackListTokens.Any(t => t.Token == token);
+            return _tokenBlacklist.BlackListTokens.Any(t => t.Token == token);
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)

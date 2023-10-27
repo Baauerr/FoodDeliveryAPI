@@ -22,6 +22,38 @@ namespace HITSBackEnd.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("HITSBackEnd.DataBase.Dish", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVegetarian")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Dishes", (string)null);
+                });
+
             modelBuilder.Entity("HITSBackEnd.Services.Account.BlackListToken", b =>
                 {
                     b.Property<string>("userEmail")
@@ -34,10 +66,10 @@ namespace HITSBackEnd.Migrations
 
                     b.HasKey("userEmail", "Token");
 
-                    b.ToTable("blackListTokens");
+                    b.ToTable("BlackListTokens");
                 });
 
-            modelBuilder.Entity("HITSBackEnd.baseClasses.Users", b =>
+            modelBuilder.Entity("HITSBackEnd.Services.Account.UserRepository.Users", b =>
                 {
                     b.Property<string>("Email")
                         .HasColumnType("text");
