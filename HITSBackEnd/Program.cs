@@ -3,6 +3,7 @@ using HITSBackEnd.DataBase;
 using HITSBackEnd.Services;
 using HITSBackEnd.Services.Account;
 using HITSBackEnd.Services.Account.IRepository;
+using HITSBackEnd.Services.Dishes.DishesRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDishesRepository, DishesRepository>();
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenGenerator>();
 

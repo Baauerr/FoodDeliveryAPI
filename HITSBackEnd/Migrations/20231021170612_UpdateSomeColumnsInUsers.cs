@@ -58,6 +58,9 @@ namespace HITSBackEnd.Migrations
         {
             migrationBuilder.AddPrimaryKey("PK_BlackListTokens", "userEmail", "Token");
         });
+
+        
+   
         }
 
         /// <inheritdoc />

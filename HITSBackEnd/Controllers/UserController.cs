@@ -1,6 +1,6 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataBase;
-using HITSBackEnd.Dto;
+using HITSBackEnd.Dto.UserDTO;
 using HITSBackEnd.Services.Account.IRepository;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
