@@ -20,6 +20,5 @@ namespace HITSBackEnd.DataBase
             modelBuilder.Entity<BlackListToken>()
                 .HasKey(blackListToken => new { blackListToken.userEmail, blackListToken.Token });
         }
-       
     }
 }

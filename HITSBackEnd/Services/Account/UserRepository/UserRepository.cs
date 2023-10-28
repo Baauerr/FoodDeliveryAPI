@@ -1,21 +1,8 @@
-﻿using Azure;
-using HITSBackEnd.baseClasses;
-using HITSBackEnd.DataBase;
+﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.UserDTO;
 using HITSBackEnd.Services.Account.UserRepository;
 using HITSBackEnd.Swagger;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
 
 namespace HITSBackEnd.Services.Account.IRepository
 {

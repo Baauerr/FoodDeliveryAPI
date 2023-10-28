@@ -4,8 +4,9 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
 {
     public interface IDishesRepository
     {
-        public string GetListOfDishes();
         public bool RatingCheck();
         public DishResponseDTO GetConcretteDish(string id);
+        public DishPageResponseDTO GetDishesPage(List<Category> categories, bool? isVegetarian, SortingTypes sorting, int page);
+
     }
 }
