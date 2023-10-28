@@ -45,7 +45,7 @@ namespace HITSBackEnd.Controllers
             return Ok(ProfileResponseDTO);
         }
 
-        [HttpGet("logout")]
+        [HttpPost("logout")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult LogOut()

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace HITSBackEnd.Controllers
 {
-    [Route("")]
+    [Route("api/dish")]
     public class DishesController : Controller
     {
         private readonly IDishesRepository _dishesRepository;
