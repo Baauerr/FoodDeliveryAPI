@@ -1,6 +1,7 @@
 ﻿using HITSBackEnd.Services.Account;
 using HITSBackEnd.Services.Account.UserRepository;
 using HITSBackEnd.Services.Dishes.DishesRepository;
+using HITSBackEnd.Services.UserCart;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -15,6 +16,7 @@ namespace HITSBackEnd.DataBase
 
         public DbSet <Dish> Dishes { get; set; }
 
+        public DbSet <Cart> Carts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BlackListToken>()
