@@ -15,10 +15,13 @@ namespace HITSBackEnd.DataBase
 
         public DbSet <Dish> Dishes { get; set; }
 
+        public DbSet <Cart> Carts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BlackListToken>()
                 .HasKey(blackListToken => new { blackListToken.userEmail, blackListToken.Token });
+            modelBuilder.Entity<Cart>()
+                .HasKey(c => new { c.UserEmail, c.DishId });
         }
        
     }

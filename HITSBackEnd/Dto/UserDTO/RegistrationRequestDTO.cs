@@ -1,4 +1,4 @@
-﻿using HITSBackEnd.baseClasses;
+﻿using HITSBackEnd.Services.Account.UserRepository;
 using System.ComponentModel.DataAnnotations;
 
 namespace HITSBackEnd.Dto.UserDTO

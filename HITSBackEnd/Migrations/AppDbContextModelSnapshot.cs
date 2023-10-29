@@ -22,38 +22,6 @@ namespace HITSBackEnd.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HITSBackEnd.DataBase.Dish", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsVegetarian")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Photo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Dishes", (string)null);
-                });
-
             modelBuilder.Entity("HITSBackEnd.Services.Account.BlackListToken", b =>
                 {
                     b.Property<string>("userEmail")
@@ -102,6 +70,56 @@ namespace HITSBackEnd.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("HITSBackEnd.Services.Dishes.DishesRepository.Dish", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVegetarian")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Dishes");
+                });
+
+            modelBuilder.Entity("HITSBackEnd.Services.UserCart.Cart", b =>
+                {
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("text")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("DishId")
+                        .HasColumnType("text")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("AmountOfDish")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserEmail", "DishId");
+
+                    b.ToTable("Carts");
                 });
 #pragma warning restore 612, 618
         }

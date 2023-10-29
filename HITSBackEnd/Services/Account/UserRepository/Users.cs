@@ -1,5 +1,4 @@
-﻿using HITSBackEnd.baseClasses;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace HITSBackEnd.Services.Account.UserRepository
