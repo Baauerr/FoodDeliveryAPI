@@ -1,5 +1,7 @@
 ﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.CartDTO;
+using HITSBackEnd.Services.Dishes.DishesRepository;
+using HITSBackEnd.Swagger;
 using Microsoft.EntityFrameworkCore;
 
 namespace HITSBackEnd.Services.UserCart
@@ -53,9 +55,23 @@ namespace HITSBackEnd.Services.UserCart
         }
        
         
-        public void RemoveDishFromCart()
+        public void RemoveDishFromCart(string email, string dishId, bool increase)
         {
-            throw new NotImplementedException();
+            var cartItem = _db.Carts
+                .FirstOrDefault(cart => cart.UserEmail == email && cart.DishId == dishId);
+            if (cartItem == null) {
+                throw new Exception(ErrorCreator.CreateError("Такого блюда в корзине пользователя нет"));
+            }
+
+            if (!increase || cartItem.AmountOfDish == 1)
+            {
+                _db.Carts.Remove(cartItem); 
+            }
+            else
+            {
+                cartItem.AmountOfDish -= 1;
+            }
+            _db.SaveChanges();
         }
     }
 }

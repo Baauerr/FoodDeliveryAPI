@@ -1,4 +1,5 @@
-﻿using HITSBackEnd.Services.Dishes.DishesRepository;
+﻿using HITSBackEnd.Controllers.AttributeUsage;
+using HITSBackEnd.Services.Dishes.DishesRepository;
 using HITSBackEnd.Services.UserCart;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace HITSBackEnd.Controllers
 
         [HttpPost("dish/{dishId}")]
         [Authorize]
+        [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult AddDishToCart(string dishId)
         {
             var email = User.Identity.Name;
@@ -30,6 +32,15 @@ namespace HITSBackEnd.Controllers
             var email = User.Identity.Name;
             var UserCartDTO =  _userCartRepository.GetUserCart(email);
             return Ok(UserCartDTO);
+        }
+        [HttpDelete("dish/{dishId}")]
+        [Authorize]
+        [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        public IActionResult DeleteDishFromCart(string dishId, [FromQuery] bool increase)
+        {
+            var email = User.Identity.Name;
+            _userCartRepository.RemoveDishFromCart(email, dishId, increase);
+            return NoContent();
         }
     }
 }
