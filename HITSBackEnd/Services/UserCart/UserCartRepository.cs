@@ -1,5 +1,6 @@
 ﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.CartDTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace HITSBackEnd.Services.UserCart
 {
@@ -28,10 +29,30 @@ namespace HITSBackEnd.Services.UserCart
                 _db.SaveChanges();
             }
         }
-        public UserCartDTO GetUserCart()
+        public GetCartDTO GetUserCart(string email)
         {
-            throw new NotImplementedException();
+            var userCartItems = _db.Carts
+            .Where(cart => cart.UserEmail == email)
+            .Join(
+                _db.Dishes,
+                cart => cart.DishId,
+                dish => dish.Id.ToString(),
+                (cart, dish) => new UserCartDTO
+                {
+                    Id = cart.DishId.ToString(),
+                    Name = dish.Name,
+                    Price = dish.Price,
+                    TotalPrice = cart.AmountOfDish * dish.Price,
+                    Amount = cart.AmountOfDish,
+                    Image = dish.Photo
+                })
+             .ToList();
+            GetCartDTO cartDTO = new GetCartDTO();
+            cartDTO.GetDishesDTO = userCartItems;
+            return cartDTO;
         }
+       
+        
         public void RemoveDishFromCart()
         {
             throw new NotImplementedException();

@@ -23,5 +23,13 @@ namespace HITSBackEnd.Controllers
             _userCartRepository.AddDishToCart(dishId, email);
             return Ok();
         }
+        [HttpGet("")]
+        [Authorize]
+        public IActionResult GetUserCart()
+        {
+            var email = User.Identity.Name;
+            var UserCartDTO =  _userCartRepository.GetUserCart(email);
+            return Ok(UserCartDTO);
+        }
     }
 }

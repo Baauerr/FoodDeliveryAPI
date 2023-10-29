@@ -21,6 +21,8 @@ namespace HITSBackEnd.DataBase
         {
             modelBuilder.Entity<BlackListToken>()
                 .HasKey(blackListToken => new { blackListToken.userEmail, blackListToken.Token });
+            modelBuilder.Entity<Cart>()
+                .HasKey(c => new { c.UserEmail, c.DishId });
         }
        
     }

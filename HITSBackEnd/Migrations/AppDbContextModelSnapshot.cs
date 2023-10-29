@@ -107,16 +107,17 @@ namespace HITSBackEnd.Migrations
             modelBuilder.Entity("HITSBackEnd.Services.UserCart.Cart", b =>
                 {
                     b.Property<string>("UserEmail")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("DishId")
+                        .HasColumnType("text")
+                        .HasColumnOrder(1);
 
                     b.Property<int>("AmountOfDish")
                         .HasColumnType("integer");
 
-                    b.Property<string>("DishId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("UserEmail");
+                    b.HasKey("UserEmail", "DishId");
 
                     b.ToTable("Carts");
                 });

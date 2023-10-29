@@ -6,6 +6,6 @@ namespace HITSBackEnd.Services.UserCart
     {
         public void AddDishToCart(string id, string email);
         public void RemoveDishFromCart();
-        public UserCartDTO GetUserCart();
+        public GetCartDTO GetUserCart(string email);
     }
 }
