@@ -4,13 +4,14 @@ using HITSBackEnd.Services.Dishes.DishesRepository;
 using HITSBackEnd.Swagger;
 using Microsoft.EntityFrameworkCore;
 
-namespace HITSBackEnd.Services.UserCart
+namespace HITSBackEnd.Services.UserCart.UserCartRepository
 {
     public class UserCartRepository : IUserCartRepository
     {
         private readonly AppDbContext _db;
 
-        public UserCartRepository(AppDbContext dbContext) {
+        public UserCartRepository(AppDbContext dbContext)
+        {
             _db = dbContext;
         }
         public void AddDishToCart(string id, string email)
@@ -53,19 +54,21 @@ namespace HITSBackEnd.Services.UserCart
             cartDTO.GetDishesDTO = userCartItems;
             return cartDTO;
         }
-       
-        
+
+
         public void RemoveDishFromCart(string email, string dishId, bool increase)
         {
             var cartItem = _db.Carts
                 .FirstOrDefault(cart => cart.UserEmail == email && cart.DishId == dishId);
-            if (cartItem == null) {
+
+            if (cartItem == null)
+            {
                 throw new Exception(ErrorCreator.CreateError("Такого блюда в корзине пользователя нет"));
             }
 
             if (!increase || cartItem.AmountOfDish == 1)
             {
-                _db.Carts.Remove(cartItem); 
+                _db.Carts.Remove(cartItem);
             }
             else
             {

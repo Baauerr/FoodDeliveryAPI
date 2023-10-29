@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HITSBackEnd.Services.UserCart
+namespace HITSBackEnd.Services.UserCart.UserCartRepository.UserCartRepository
 {
     public class Cart
     {
         [Key]
         [Column(Order = 0)]
-        public string UserEmail {  get; set; }
+        public string UserEmail { get; set; }
         [Key]
         [Column(Order = 1)]
         public string DishId { get; set; }

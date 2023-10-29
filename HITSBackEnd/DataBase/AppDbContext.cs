@@ -1,7 +1,6 @@
 ﻿using HITSBackEnd.Services.Account;
 using HITSBackEnd.Services.Account.UserRepository;
 using HITSBackEnd.Services.Dishes.DishesRepository;
-using HITSBackEnd.Services.UserCart;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
