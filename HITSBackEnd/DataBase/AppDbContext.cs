@@ -1,8 +1,9 @@
 ﻿using HITSBackEnd.Services.Account;
 using HITSBackEnd.Services.Account.UserRepository;
 using HITSBackEnd.Services.Dishes.DishesRepository;
+using HITSBackEnd.Services.UserCart.UserCartRepository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
+
 
 namespace HITSBackEnd.DataBase
 {
@@ -10,19 +11,18 @@ namespace HITSBackEnd.DataBase
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<Users> Users { get; set; }
-        public DbSet<BlackListToken> BlackListTokens { get; set; }
+        public DbSet<UsersTable> Users { get; set; }
+        public DbSet<BlackListTokenTable> BlackListTokens { get; set; }
 
-        public DbSet <Dish> Dishes { get; set; }
+        public DbSet <DishTable> Dishes { get; set; }
 
-        public DbSet <Cart> Carts { get; set; }
+        public DbSet <CartTable> Carts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BlackListToken>()
+            modelBuilder.Entity<BlackListTokenTable>()
                 .HasKey(blackListToken => new { blackListToken.userEmail, blackListToken.Token });
-            modelBuilder.Entity<Cart>()
+            modelBuilder.Entity<CartTable>()
                 .HasKey(c => new { c.UserEmail, c.DishId });
         }
-       
     }
 }

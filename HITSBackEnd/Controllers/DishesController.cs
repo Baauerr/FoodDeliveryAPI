@@ -1,12 +1,9 @@
-﻿using HITSBackEnd.Dto.UserDTO;
-using HITSBackEnd.Services.Account.IRepository;
-using HITSBackEnd.Services.Dishes.DishesRepository;
-using HITSBackEnd.Swagger;
+﻿using HITSBackEnd.Services.Dishes.DishesRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HITSBackEnd.Controllers
 {
-    [Route("api/order")]
+    [Route("api/dish")]
     public class DishesController : Controller
     {
         private readonly IDishesRepository _dishesRepository;

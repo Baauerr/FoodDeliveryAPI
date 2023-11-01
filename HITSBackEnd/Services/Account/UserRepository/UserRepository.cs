@@ -64,7 +64,7 @@ namespace HITSBackEnd.Services.Account.IRepository
                 throw new Exception(ErrorCreator.CreateError("Неверный формат телефона"));
             }
 
-            var newUser = new Users
+            var newUser = new UsersTable
             {
                 FullName = registrationRequestDTO.FullName,
                 Email = registrationRequestDTO.Email,
@@ -108,7 +108,7 @@ namespace HITSBackEnd.Services.Account.IRepository
 
         public void LogOut(string token, string email)
         {
-            BlackListToken newToken = new BlackListToken();
+            BlackListTokenTable newToken = new BlackListTokenTable();
             newToken.Token = token;
             newToken.userEmail = email;
             _db.BlackListTokens.Add(newToken);

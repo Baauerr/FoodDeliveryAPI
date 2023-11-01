@@ -30,6 +30,7 @@ namespace HITSBackEnd.Services.Account.IRepository
                 new Claim(ClaimTypes.Name, email)
                 }),
                 Issuer = "HITSBackend", 
+                Audience = "HITSBackend"
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
