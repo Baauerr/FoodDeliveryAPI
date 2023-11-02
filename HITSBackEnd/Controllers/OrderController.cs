@@ -37,7 +37,8 @@ namespace HITSBackEnd.Controllers
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO)
         {
-            _ordersRepository.CreateNewOrder(newOrderRequestDTO);
+            var userId = User.Identity.Name;
+            _ordersRepository.CreateNewOrder(newOrderRequestDTO, userId);
             return Ok();
         }
         [HttpPost("{id}/status")]
