@@ -18,9 +18,9 @@ namespace HITSBackEnd.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetConcretteDish(string id)
+        public async Task<IActionResult> GetConcretteDish(string id)
         {
-            var concretteDish = _dishesRepository.GetConcretteDish(id);
+            var concretteDish = await _dishesRepository.GetConcretteDish(id);
 
             return Ok(concretteDish);
         }
@@ -29,11 +29,11 @@ namespace HITSBackEnd.Controllers
         [HttpGet("{id}/rating/check")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult RatingCheck(string id)
+        public async Task<IActionResult> RatingCheck(string id)
         {
             var userEmail = User.Identity.Name;
 
-            var opportunityToRate = _dishesRepository.RatingCheck(id, userEmail);
+            var opportunityToRate = await _dishesRepository.RatingCheck(id, userEmail);
 
             return Ok(opportunityToRate);
         }
@@ -46,10 +46,12 @@ namespace HITSBackEnd.Controllers
 
             return Ok(dishesPage);
         }
+
+
         [HttpPost("{id}/rating")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult SetRating([FromQuery] double ratingScore, string id)
+        public async Task<IActionResult> SetRating([FromQuery] double ratingScore, string id)
         {
             if (ratingScore > 10)
             {
@@ -58,7 +60,7 @@ namespace HITSBackEnd.Controllers
 
             var userEmail = User.Identity.Name;
 
-            _dishesRepository.SetRating(id, userEmail, ratingScore);
+            await _dishesRepository.SetRating(id, userEmail, ratingScore);
 
             return Ok();
         }

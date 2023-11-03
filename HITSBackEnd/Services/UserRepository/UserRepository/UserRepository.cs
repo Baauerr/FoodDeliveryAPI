@@ -3,6 +3,7 @@ using HITSBackEnd.Dto.UserDTO;
 using HITSBackEnd.Services.Account;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HITSBackEnd.Services.UserRepository
 {
@@ -62,7 +63,7 @@ namespace HITSBackEnd.Services.UserRepository
                 PhoneNumber = registrationRequestDTO.PhoneNumber,
             };
 
-            _db.Users.Add(newUser);
+            await _db.Users.AddAsync(newUser);
             await _db.SaveChangesAsync();
             RegistrationLoginResponseDTO response = new RegistrationLoginResponseDTO
             {
@@ -76,9 +77,9 @@ namespace HITSBackEnd.Services.UserRepository
             return passwordHasher.HashPassword("2023", password);
         }
 
-        public ProfileResponseDTO Profile(string email)
+        public async Task<ProfileResponseDTO> Profile(string email)
         {
-            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             ProfileResponseDTO response = new ProfileResponseDTO
             {
@@ -93,18 +94,18 @@ namespace HITSBackEnd.Services.UserRepository
             return response;
         }
 
-        public void LogOut(string token, string email)
+        public async Task LogOut(string token, string email)
         {
             BlackListTokenTable newToken = new BlackListTokenTable();
             newToken.Token = token;
             newToken.userEmail = email;
-            _db.BlackListTokens.Add(newToken);
-            _db.SaveChanges();
+            await _db.BlackListTokens.AddAsync(newToken);
+            await _db.SaveChangesAsync();
         }
 
-        public void EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email)
+        public async Task EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email)
         {
-            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+            var user =  await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             user.FullName = userUpdateData.FullName ?? user.FullName;
             user.BirthDate = userUpdateData.BirthDate ?? user.BirthDate;
@@ -117,7 +118,7 @@ namespace HITSBackEnd.Services.UserRepository
                     user.PhoneNumber = userUpdateData.PhoneNumber;
                 }
             }
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }

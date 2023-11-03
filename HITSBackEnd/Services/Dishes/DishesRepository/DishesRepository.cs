@@ -1,6 +1,7 @@
 ﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.DishDTO;
 using HITSBackEnd.Swagger;
+using Microsoft.EntityFrameworkCore;
 using static Azure.Core.HttpHeader;
 
 namespace HITSBackEnd.Services.Dishes.DishesRepository
@@ -15,14 +16,14 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             _db = db;
         }
 
-        public bool RatingCheck(string dishId, string userEmail)
+        public async Task<bool> RatingCheck(string dishId, string userEmail)
         {
             var ordersId = _db.OrdersDishes
                 .Where(d => d.DishId == dishId)
                 .Select(d => d.OrderId)
                 .ToList();
 
-            var userOrderChecker = _db.Orders.FirstOrDefault(order => order.UserEmail == userEmail && ordersId.Contains(order.Id.ToString()));
+            var userOrderChecker = await _db.Orders.FirstOrDefaultAsync(order => order.UserEmail == userEmail && ordersId.Contains(order.Id.ToString()));
             if (userOrderChecker != null)
             {
                 return true;
@@ -31,7 +32,7 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             return false;
         }
 
-        public DishTable GetConcretteDish(string id)
+        public async Task<DishTable> GetConcretteDish(string id)
         {
             Guid idGuid;
             if (!Guid.TryParse(id, out idGuid))
@@ -39,7 +40,7 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
                 throw new Exception(ErrorCreator.CreateError("Такого блюда нет в меню"));
             }
 
-            var dish = _db.Dishes.FirstOrDefault(u => u.Id == idGuid);
+            var dish = await _db.Dishes.FirstOrDefaultAsync(u => u.Id == idGuid);
 
             DishResponseDTO response = new DishResponseDTO
                      {
@@ -130,9 +131,9 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             return pageDTO;
         }
 
-        public void SetRating(string dishId, string userEmail, double rate)
+        public async Task SetRating(string dishId, string userEmail, double rate)
         {
-            var dishToRate = _db.DishesRating.FirstOrDefault(dish => dish.DishId == dishId);
+            var dishToRate = await _db.DishesRating.FirstOrDefaultAsync(dish => dish.DishId == dishId);
                 if (dishToRate == null)
                 {
                     RatingTable newRate = new RatingTable()
@@ -147,18 +148,18 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
                 {
                     dishToRate.Value = rate;
                 }
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             updateDishRate(dishId);      
 
         }
-        private void updateDishRate(string DishId)
+        private async Task updateDishRate(string DishId)
         {
-            var dish = _db.Dishes.FirstOrDefault(dish => dish.Id.ToString() == DishId);
+            var dish = await _db.Dishes.FirstOrDefaultAsync(dish => dish.Id.ToString() == DishId);
             var averageValue = _db.DishesRating
                 .Where(r => r.DishId == DishId)
                 .Average(r => r.Value);
             dish.rating = averageValue;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }

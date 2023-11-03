@@ -14,13 +14,13 @@ namespace HITSBackEnd.Services.UserCart.UserCartRepository
         {
             _db = dbContext;
         }
-        public void AddDishToCart(string id, string email)
+        public async Task AddDishToCart(string id, string email)
         {
             if (_db.Carts.Any(d => d.DishId == id))
             {
-                var dish = _db.Carts.FirstOrDefault(d => d.DishId == id);
+                var dish = await _db.Carts.FirstOrDefaultAsync(d => d.DishId == id);
                 dish.AmountOfDish += 1;
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
             }
             else
             {
@@ -28,8 +28,8 @@ namespace HITSBackEnd.Services.UserCart.UserCartRepository
                 cart.DishId = id;
                 cart.UserEmail = email;
                 cart.AmountOfDish = 1;
-                _db.Add(cart);
-                _db.SaveChanges();
+                await _db.AddAsync(cart);
+                await _db.SaveChangesAsync();
             }
         }
         public GetCartDTO GetUserCart(string email)
@@ -56,10 +56,9 @@ namespace HITSBackEnd.Services.UserCart.UserCartRepository
         }
 
 
-        public void RemoveDishFromCart(string email, string dishId, bool increase)
+        public async Task RemoveDishFromCart(string email, string dishId, bool increase)
         {
-            var cartItem = _db.Carts
-                .FirstOrDefault(cart => cart.UserEmail == email && cart.DishId == dishId);
+            var cartItem = await _db.Carts.FirstOrDefaultAsync(cart => cart.UserEmail == email && cart.DishId == dishId);
 
             if (cartItem == null)
             {
@@ -74,7 +73,7 @@ namespace HITSBackEnd.Services.UserCart.UserCartRepository
             {
                 cartItem.AmountOfDish -= 1;
             }
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }

@@ -35,33 +35,34 @@ namespace HITSBackEnd.Controllers
             var RegistrationLoginResponceDTO = await _userRepository.Register(model);
             return Ok(RegistrationLoginResponceDTO);
         }
+
         [HttpGet("profile")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult GetProfile()
+        public async Task<IActionResult> GetProfile()
         {
-            var ProfileResponseDTO = _userRepository.Profile(User.Identity.Name);
+            var ProfileResponseDTO = await _userRepository.Profile(User.Identity.Name);
             return Ok(ProfileResponseDTO);
         }
 
         [HttpPost("logout")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult LogOut()
+        public async Task<IActionResult> LogOut()
         {
             string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             string email = User.Identity.Name;
-            _userRepository.LogOut(token, email);
+            await _userRepository.LogOut(token, email);
             return Ok();
         }
 
         [HttpPut("profile")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult editUserProfile([FromBody] EditUserInfoRequestDTO model)
+        public async Task<IActionResult> editUserProfile([FromBody] EditUserInfoRequestDTO model)
         {
             string email = User.Identity.Name;
-            _userRepository.EditUserInfo(model, email);
+            await _userRepository.EditUserInfo(model, email);
             return Ok();
         }
 

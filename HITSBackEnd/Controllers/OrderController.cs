@@ -21,9 +21,9 @@ namespace HITSBackEnd.Controllers
         [HttpGet("{id}")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult GetConcretteOrder(string id)
+        public async Task<IActionResult> GetConcretteOrder(string id)
         {
-            var concretteOrderResponseDTO = _ordersRepository.GetConcretteOrder(id);
+            var concretteOrderResponseDTO = await _ordersRepository.GetConcretteOrder(id);
             return Ok(concretteOrderResponseDTO);
         }
 
@@ -42,12 +42,12 @@ namespace HITSBackEnd.Controllers
         [HttpPost("")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO)
+        public async Task<IActionResult> CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO)
         {
             if (TimeChecker.ValidTime(DateTime.UtcNow, newOrderRequestDTO.DeliveryTime))
             {
                 var userId = User.Identity.Name;
-                _ordersRepository.CreateNewOrder(newOrderRequestDTO, userId);
+                await _ordersRepository.CreateNewOrder(newOrderRequestDTO, userId);
             }
             else
             {
@@ -60,9 +60,9 @@ namespace HITSBackEnd.Controllers
         [HttpPost("{id}/status")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult ConfirmOrderDelivery(string id)
+        public async Task<IActionResult> ConfirmOrderDelivery(string id)
         {
-            _ordersRepository.ConfirmOrderDelivery(id);
+            await _ordersRepository.ConfirmOrderDelivery(id);
             return Ok();
         }
 

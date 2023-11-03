@@ -19,10 +19,10 @@ namespace HITSBackEnd.Controllers
         [HttpPost("dish/{dishId}")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult AddDishToCart(string dishId)
+        public async Task<IActionResult> AddDishToCart(string dishId)
         {
             var email = User.Identity.Name;
-            _userCartRepository.AddDishToCart(dishId, email);
+            await _userCartRepository.AddDishToCart(dishId, email);
             return Ok();
         }
         [HttpGet("")]
@@ -30,16 +30,16 @@ namespace HITSBackEnd.Controllers
         public IActionResult GetUserCart()
         {
             var email = User.Identity.Name;
-            var UserCartDTO =  _userCartRepository.GetUserCart(email);
+            var UserCartDTO = _userCartRepository.GetUserCart(email);
             return Ok(UserCartDTO);
         }
         [HttpDelete("dish/{dishId}")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public IActionResult DeleteDishFromCart(string dishId, [FromQuery] bool increase)
+        public async Task<IActionResult> DeleteDishFromCart(string dishId, [FromQuery] bool increase)
         {
             var email = User.Identity.Name;
-            _userCartRepository.RemoveDishFromCart(email, dishId, increase);
+            await _userCartRepository.RemoveDishFromCart(email, dishId, increase);
             return NoContent();
         }
     }

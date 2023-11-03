@@ -1,5 +1,6 @@
 ﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.OrderDTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace HITSBackEnd.Services.Orders
 {
@@ -10,7 +11,7 @@ namespace HITSBackEnd.Services.Orders
         public OrdersRepository(AppDbContext appDbContext) {
             _db = appDbContext;
         }
-        public void CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO, string userEmail)
+        public async Task CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO, string userEmail)
         {
             var newOrder = new OrdersTable()
             {
@@ -22,21 +23,21 @@ namespace HITSBackEnd.Services.Orders
                 Adress = newOrderRequestDTO.addressId
             };
 
-            _db.Orders.Add(newOrder);
-            _db.SaveChanges();
-            ConnectDishesToOrder(userEmail);
+            await _db.Orders.AddAsync(newOrder);
+            await _db.SaveChangesAsync();
+            await ConnectDishesToOrder(userEmail);
 
         }
 
-        public ConcretteOrderResponseDTO GetConcretteOrder(string orderId)
+        public async Task<ConcretteOrderResponseDTO> GetConcretteOrder(string orderId)
         {
-            var dishesInOrder = _db.OrdersDishes.Where(order => order.OrderId == orderId).ToList();
+            var dishesInOrder =  _db.OrdersDishes.Where(order => order.OrderId == orderId).ToList();
 
             List<DishInOrderDTO> orderDishes = new List<DishInOrderDTO>();
 
             foreach (var dish in dishesInOrder)
             {
-                var dishFromDb = _db.Dishes.FirstOrDefault(d => d.Id == Guid.Parse(dish.DishId));
+                var dishFromDb = await _db.Dishes.FirstOrDefaultAsync(d => d.Id == Guid.Parse(dish.DishId));
                 DishInOrderDTO dishInOrder = new DishInOrderDTO
                 {
                     Id = dishFromDb.Id.ToString(),
@@ -51,7 +52,7 @@ namespace HITSBackEnd.Services.Orders
 
             }
 
-            var concretteOrderFromDb = _db.Orders.FirstOrDefault(order => order.Id == Guid.Parse(orderId));
+            var concretteOrderFromDb = await _db.Orders.FirstOrDefaultAsync(order => order.Id == Guid.Parse(orderId));
             ConcretteOrderResponseDTO concretteOrder = new ConcretteOrderResponseDTO()
             {
                 Id = concretteOrderFromDb.Id,
@@ -87,21 +88,21 @@ namespace HITSBackEnd.Services.Orders
             return listOfOrders;
         }
 
-        public void ConfirmOrderDelivery(string orderId)
+        public async Task ConfirmOrderDelivery(string orderId)
         {
-            var order = _db.Orders.FirstOrDefault(o => o.Id == Guid.Parse(orderId));
+            var order = await _db.Orders.FirstOrDefaultAsync(o => o.Id == Guid.Parse(orderId));
             order.Status = Status.Delivered;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
-        private void ConnectDishesToOrder(string userEmail)
+        private async Task ConnectDishesToOrder(string userEmail)
         {
             var cartItemsToMove = _db.Carts.Where(ct => ct.UserEmail == userEmail).ToList();
 
             _db.Carts.RemoveRange(cartItemsToMove);
             _db.SaveChanges();
             var Price = 0.0;
-            var orderIdToAssign = GetOrderIdFromOrdersTableWithPriceMinusOne();
+            var orderIdToAssign = await GetOrderIdFromOrdersTableWithPriceMinusOne();
             var ordersDishesItems = cartItemsToMove.Select(cartItem => new OrdersDishesTable
             {
                 DishId = cartItem.DishId,
@@ -109,13 +110,13 @@ namespace HITSBackEnd.Services.Orders
                 Amount = cartItem.AmountOfDish
             }).ToList();
 
-            _db.OrdersDishes.AddRange(ordersDishesItems);
-            _db.SaveChanges();
-            AddPriceToOrder(orderIdToAssign);
+            await _db.OrdersDishes.AddRangeAsync(ordersDishesItems);
+            await _db.SaveChangesAsync();
+            await AddPriceToOrder(orderIdToAssign);
         }
-        private string GetOrderIdFromOrdersTableWithPriceMinusOne()
+        private async Task<string> GetOrderIdFromOrdersTableWithPriceMinusOne()
         {
-            var order = _db.Orders.FirstOrDefault(ot => ot.Price == -1);
+            var order = await _db.Orders.FirstOrDefaultAsync(ot => ot.Price == -1);
             if (order != null)
             {
                 return order.Id.ToString();
@@ -124,7 +125,7 @@ namespace HITSBackEnd.Services.Orders
             return ""; 
         }
 
-        private void AddPriceToOrder(string orderId)
+        private async Task AddPriceToOrder(string orderId)
         {
             var cartItemsToMove = _db.OrdersDishes.Where(ct => ct.OrderId == orderId).ToList();
             var totalPrice = 0.0;
@@ -132,7 +133,7 @@ namespace HITSBackEnd.Services.Orders
             {
                 string dishId = cartItem.DishId;
 
-                var dish = _db.Dishes.FirstOrDefault(d => d.Id ==  Guid.Parse(dishId));
+                var dish = await _db.Dishes.FirstOrDefaultAsync(d => d.Id ==  Guid.Parse(dishId));
 
                 if (dish != null)
                 {
@@ -141,9 +142,9 @@ namespace HITSBackEnd.Services.Orders
                     totalPrice += itemTotalPrice;
                 }
             }
-            var orderToChange = _db.Orders.FirstOrDefault(ct => ct.Id == Guid.Parse(orderId));
+            var orderToChange = await _db.Orders.FirstOrDefaultAsync(ct => ct.Id == Guid.Parse(orderId));
             orderToChange.Price = totalPrice;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }

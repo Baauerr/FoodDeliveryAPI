@@ -5,12 +5,11 @@ namespace HITSBackEnd.Services.UserRepository
     public interface IUserRepository
     {
         bool IsUniqueUser(string email);
-        Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-        Task<RegistrationLoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO);
-        public ProfileResponseDTO Profile(string name);
+        public Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
+        public Task<RegistrationLoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO);
+        public Task<ProfileResponseDTO> Profile(string name);
+        public Task LogOut(string name, string email);
 
-        public void LogOut(string name, string email);
-
-        public void EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email);
+        public Task EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email);
     }
 }
