@@ -30,9 +30,41 @@ namespace HITSBackEnd.Services.Orders
 
         }
 
-        public ConcretteOrderResponseDTO GetConcretteOrder(string id)
+        public ConcretteOrderResponseDTO GetConcretteOrder(string orderId)
         {
-            throw new NotImplementedException();
+            var dishesInOrder = _db.OrdersDishes.Where(order => order.OrderId == orderId).ToList();
+
+            List<DishInOrderDTO> orderDishes = new List<DishInOrderDTO>();
+
+            foreach (var dish in dishesInOrder)
+            {
+                var dishFromDb = _db.Dishes.FirstOrDefault(d => d.Id == Guid.Parse(dish.DishId));
+                DishInOrderDTO dishInOrder = new DishInOrderDTO
+                {
+                    Id = dishFromDb.Id.ToString(),
+                    Name = dishFromDb.Name,
+                    price = dishFromDb.Price,
+                    TotalPrice = dish.Amount * dishFromDb.Price,
+                    Amount = dish.Amount,
+                    Image = dishFromDb.Photo    
+                };
+
+                orderDishes.Add(dishInOrder);
+
+            }
+
+            var concretteOrderFromDb = _db.Orders.FirstOrDefault(order => order.Id == Guid.Parse(orderId));
+            ConcretteOrderResponseDTO concretteOrder = new ConcretteOrderResponseDTO()
+            {
+                Id = concretteOrderFromDb.Id,
+                DeliveryTime = concretteOrderFromDb.DeliveryTime,
+                OrderTime = concretteOrderFromDb.OrderTime,
+                Status = concretteOrderFromDb.Status,
+                Price = concretteOrderFromDb.Price,
+                DishInOrder = orderDishes,
+                Adress = concretteOrderFromDb.Adress,
+            };
+            return concretteOrder;
         }
 
         public List<OrderInList> GetListOfOrders(string userEmail)

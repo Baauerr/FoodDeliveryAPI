@@ -16,6 +16,8 @@ namespace HITSBackEnd.Controllers
         {
             _ordersRepository = ordersRepository;
         }
+
+
         [HttpGet("{id}")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
@@ -24,6 +26,7 @@ namespace HITSBackEnd.Controllers
             var concretteOrderResponseDTO = _ordersRepository.GetConcretteOrder(id);
             return Ok(concretteOrderResponseDTO);
         }
+
 
         [HttpGet("")]
         [Authorize]
@@ -34,6 +37,8 @@ namespace HITSBackEnd.Controllers
             var orderResponseDTO = _ordersRepository.GetListOfOrders(userEmail);
             return Ok(orderResponseDTO);
         }
+
+
         [HttpPost("")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
@@ -50,6 +55,8 @@ namespace HITSBackEnd.Controllers
             }
             return Ok();
         }
+
+
         [HttpPost("{id}/status")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
