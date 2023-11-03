@@ -17,10 +17,21 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
 
         public bool RatingCheck(string dishId, string userEmail)
         {
-            throw new NotImplementedException();
+            var ordersId = _db.OrdersDishes
+                .Where(d => d.DishId == dishId)
+                .Select(d => d.OrderId)
+                .ToList();
+
+            var userOrderChecker = _db.Orders.FirstOrDefault(order => order.UserEmail == userEmail && ordersId.Contains(order.Id.ToString()));
+            if (userOrderChecker != null)
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public DishResponseDTO GetConcretteDish(string id)
+        public DishTable GetConcretteDish(string id)
         {
             Guid idGuid;
             if (!Guid.TryParse(id, out idGuid))
@@ -41,7 +52,7 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
                          Photo = dish.Photo
                       };
 
-            return response;
+            return dish;
         }
         public DishPageResponseDTO GetDishesPage(List<Category> categories, bool? isVegetarian, SortingTypes sorting, int page)
         {
@@ -119,9 +130,35 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             return pageDTO;
         }
 
-        public void SetRaiting(string dishId, string userId)
+        public void SetRating(string dishId, string userEmail, double rate)
         {
-            throw new NotImplementedException();
+            var dishToRate = _db.DishesRating.FirstOrDefault(dish => dish.DishId == dishId);
+                if (dishToRate == null)
+                {
+                    RatingTable newRate = new RatingTable()
+                    {
+                        DishId = dishId,
+                        UserEmail = userEmail,
+                        Value = rate
+                    };
+                    _db.DishesRating.Add(newRate);
+                }
+                else
+                {
+                    dishToRate.Value = rate;
+                }
+            _db.SaveChanges();
+            updateDishRate(dishId);      
+
+        }
+        private void updateDishRate(string DishId)
+        {
+            var dish = _db.Dishes.FirstOrDefault(dish => dish.Id.ToString() == DishId);
+            var averageValue = _db.DishesRating
+                .Where(r => r.DishId == DishId)
+                .Average(r => r.Value);
+            dish.rating = averageValue;
+            _db.SaveChanges();
         }
     }
 }
