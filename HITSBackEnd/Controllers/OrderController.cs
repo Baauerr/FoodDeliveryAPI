@@ -1,6 +1,7 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.Dto.OrderDTO;
 using HITSBackEnd.Services.Orders;
+using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,8 @@ namespace HITSBackEnd.Controllers
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult GetListOfOrders()
         {
-            var orderResponseDTO = _ordersRepository.GetListOfOrders();
+            var userEmail = User.Identity.Name;
+            var orderResponseDTO = _ordersRepository.GetListOfOrders(userEmail);
             return Ok(orderResponseDTO);
         }
         [HttpPost("")]
@@ -37,8 +39,15 @@ namespace HITSBackEnd.Controllers
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         public IActionResult CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO)
         {
-            var userId = User.Identity.Name;
-            _ordersRepository.CreateNewOrder(newOrderRequestDTO, userId);
+            if (TimeChecker.ValidTime(DateTime.UtcNow, newOrderRequestDTO.DeliveryTime))
+            {
+                var userId = User.Identity.Name;
+                _ordersRepository.CreateNewOrder(newOrderRequestDTO, userId);
+            }
+            else
+            {
+                throw new Exception(ErrorCreator.CreateError("Недостаточно времени для доставки"));
+            }
             return Ok();
         }
         [HttpPost("{id}/status")]

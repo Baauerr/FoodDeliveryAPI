@@ -35,9 +35,26 @@ namespace HITSBackEnd.Services.Orders
             throw new NotImplementedException();
         }
 
-        public ListOfOrdersResponseDTO GetListOfOrders()
+        public List<OrderInList> GetListOfOrders(string userEmail)
         {
-            throw new NotImplementedException();
+            var allOrders = _db.Orders.Where(order => order.UserEmail == userEmail).ToList();
+            List<OrderInList> listOfOrders = new List<OrderInList>();
+
+            foreach (var order in allOrders)
+            {
+                OrderInList orderInList = new OrderInList
+                {
+                    Id = (order.Id).ToString(),
+                    DeliveryTime = order.DeliveryTime,
+                    OrderTime = order.OrderTime,
+                    Status = order.Status,
+                    Price = order.Price
+                };
+
+                listOfOrders.Add(orderInList);
+
+            }
+            return listOfOrders;
         }
 
         public void ConfirmOrderDelivery(string id)
@@ -63,7 +80,6 @@ namespace HITSBackEnd.Services.Orders
             _db.OrdersDishes.AddRange(ordersDishesItems);
             _db.SaveChanges();
             AddPriceToOrder(orderIdToAssign);
-
         }
         private string GetOrderIdFromOrdersTableWithPriceMinusOne()
         {

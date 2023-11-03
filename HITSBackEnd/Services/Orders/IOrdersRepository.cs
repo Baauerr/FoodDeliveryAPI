@@ -4,10 +4,10 @@ namespace HITSBackEnd.Services.Orders
 {
     public interface IOrdersRepository
     {
-        public ConcretteOrderResponseDTO GetConcretteOrder(string id);
-        public ListOfOrdersResponseDTO GetListOfOrders();
-        public void CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO, string UserId);
-        public void ConfirmOrderDelivery(string id);
+        public ConcretteOrderResponseDTO GetConcretteOrder(string orderId);
+        public List<OrderInList> GetListOfOrders(string userId);
+        public void CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO, string userId);
+        public void ConfirmOrderDelivery(string orderId);
 
         private void ConnectDishesToOrder(string userEmail) { }
     }
