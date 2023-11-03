@@ -1,9 +1,6 @@
 ﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.DishDTO;
 using HITSBackEnd.Swagger;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using System;
 using static Azure.Core.HttpHeader;
 
 namespace HITSBackEnd.Services.Dishes.DishesRepository
@@ -18,7 +15,7 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             _db = db;
         }
 
-        public bool RatingCheck()
+        public bool RatingCheck(string dishId, string userEmail)
         {
             throw new NotImplementedException();
         }
