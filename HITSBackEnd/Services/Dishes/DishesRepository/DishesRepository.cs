@@ -121,5 +121,10 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             pageDTO.Pagination = paginationDTO;
             return pageDTO;
         }
+
+        public void SetRaiting(string dishId, string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
