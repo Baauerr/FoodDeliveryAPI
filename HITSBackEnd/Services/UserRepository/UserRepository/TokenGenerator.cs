@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace HITSBackEnd.Services.Account.IRepository
+namespace HITSBackEnd.Services.UserRepository
 {
     public class TokenGenerator
     {
@@ -29,8 +29,12 @@ namespace HITSBackEnd.Services.Account.IRepository
                 {
                 new Claim(ClaimTypes.Name, email)
                 }),
+<<<<<<<< HEAD:HITSBackEnd/Services/UserRepository/UserRepository/TokenGenerator.cs
                 Issuer = "HITSBackend", 
                 Audience = "HITSBackend"
+========
+                Issuer = "HITSBackend",
+>>>>>>>> editUserProfile:HITSBackEnd/Services/UserRepository/TokenGenerator.cs
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

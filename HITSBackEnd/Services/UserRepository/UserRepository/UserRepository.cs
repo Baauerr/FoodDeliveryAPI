@@ -1,10 +1,18 @@
+<<<<<<<< HEAD:HITSBackEnd/Services/UserRepository/UserRepository/UserRepository.cs
 ﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.UserDTO;
 using HITSBackEnd.Services.Account.UserRepository;
+========
+﻿using Azure;
+using HITSBackEnd.baseClasses;
+using HITSBackEnd.DataBase;
+using HITSBackEnd.Dto.UserDTO;
+using HITSBackEnd.Services.Account;
+>>>>>>>> editUserProfile:HITSBackEnd/Services/UserRepository/UserRepository.cs
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Identity;
 
-namespace HITSBackEnd.Services.Account.IRepository
+namespace HITSBackEnd.Services.UserRepository
 {
     public class UserRepository : IUserRepository
     {
@@ -80,18 +88,18 @@ namespace HITSBackEnd.Services.Account.IRepository
         {
             var user = _db.Users.FirstOrDefault(u => u.Email == email);
 
-                ProfileResponseDTO response = new ProfileResponseDTO
-                {
-                    Id = user.Id,
-                    FullName = user.FullName,
-                    BirthDate = user.BirthDate,
-                    Gender = user.Gender,
-                    PhoneNumber = user.PhoneNumber,
-                    Email = user.Email,
-                    Address = user.Address,
-                };
-                return response;
-            }
+            ProfileResponseDTO response = new ProfileResponseDTO
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                BirthDate = user.BirthDate,
+                Gender = user.Gender,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                Address = user.Address,
+            };
+            return response;
+        }
 
         public void LogOut(string token, string email)
         {
@@ -99,6 +107,24 @@ namespace HITSBackEnd.Services.Account.IRepository
             newToken.Token = token;
             newToken.userEmail = email;
             _db.BlackListTokens.Add(newToken);
+            _db.SaveChanges();
+        }
+
+        public void EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email)
+        {
+            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+
+            user.FullName = userUpdateData.FullName ?? user.FullName;
+            user.BirthDate = userUpdateData.BirthDate ?? user.BirthDate;
+            user.Gender = userUpdateData.Gender ?? user.Gender;
+            user.Address = userUpdateData.AddressId ?? user.Address;
+            if (userUpdateData.PhoneNumber != null)
+            {
+                if (DataValidator.ValidatePhoneNumber(userUpdateData.PhoneNumber))
+                {
+                    user.PhoneNumber = userUpdateData.PhoneNumber;
+                }
+            }
             _db.SaveChanges();
         }
     }
