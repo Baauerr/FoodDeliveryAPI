@@ -10,7 +10,7 @@ namespace HITSBackEnd.Dto.OrderDTO
         public DateTime OrderTime { get; set; }
         public Status Status { get; set; }
         public double Price { get; set; }
-        public List<DishInOrderDTO>? DishInOrder { get; set; }
+        public List<DishInOrderDTO> DishInOrder { get; set; }
         public string Adress { get; set; }
     }
 }

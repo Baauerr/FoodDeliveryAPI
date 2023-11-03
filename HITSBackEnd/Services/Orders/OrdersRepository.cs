@@ -57,9 +57,11 @@ namespace HITSBackEnd.Services.Orders
             return listOfOrders;
         }
 
-        public void ConfirmOrderDelivery(string id)
+        public void ConfirmOrderDelivery(string orderId)
         {
-            throw new NotImplementedException();
+            var order = _db.Orders.FirstOrDefault(o => o.Id == Guid.Parse(orderId));
+            order.Status = Status.Delivered;
+            _db.SaveChanges();
         }
 
         private void ConnectDishesToOrder(string userEmail)
