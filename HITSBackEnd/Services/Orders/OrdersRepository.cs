@@ -1,7 +1,5 @@
 ﻿using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.OrderDTO;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HITSBackEnd.Services.Orders
 {

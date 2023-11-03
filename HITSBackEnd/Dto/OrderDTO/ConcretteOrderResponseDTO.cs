@@ -1,5 +1,4 @@
 ﻿using HITSBackEnd.Services.Orders;
-using System.ComponentModel.DataAnnotations;
 
 namespace HITSBackEnd.Dto.OrderDTO
 {

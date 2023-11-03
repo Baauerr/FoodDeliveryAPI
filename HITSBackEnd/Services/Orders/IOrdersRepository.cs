@@ -8,7 +8,5 @@ namespace HITSBackEnd.Services.Orders
         public List<OrderInList> GetListOfOrders(string userId);
         public void CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO, string userId);
         public void ConfirmOrderDelivery(string orderId);
-
-        private void ConnectDishesToOrder(string userEmail) { }
     }
 }
