@@ -1,9 +1,4 @@
-﻿using HITSBackEnd.baseClasses;
-using HITSBackEnd.Dto.UserDTO;
-<<<<<<<< HEAD:HITSBackEnd/Services/UserRepository/UserRepository/IUserRepository.cs
-using HITSBackEnd.Services.Account;
-========
->>>>>>>> editUserProfile:HITSBackEnd/Services/UserRepository/IUserRepository.cs
+﻿using HITSBackEnd.Dto.UserDTO;
 
 namespace HITSBackEnd.Services.UserRepository
 {

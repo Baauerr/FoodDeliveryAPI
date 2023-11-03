@@ -1,7 +1,6 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
-using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.UserDTO;
-using HITSBackEnd.Services.Account.IRepository;
+using HITSBackEnd.Services.UserRepository;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +52,16 @@ namespace HITSBackEnd.Controllers
             string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             string email = User.Identity.Name;
             _userRepository.LogOut(token, email);
+            return Ok();
+        }
+
+        [HttpPut("profile")]
+        [Authorize]
+        [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        public IActionResult editUserProfile([FromBody] EditUserInfoRequestDTO model)
+        {
+            string email = User.Identity.Name;
+            _userRepository.EditUserInfo(model, email);
             return Ok();
         }
 

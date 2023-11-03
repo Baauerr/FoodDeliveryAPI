@@ -1,12 +1,6 @@
-﻿using HITSBackEnd.baseClasses;
-using Microsoft.AspNetCore.Identity;
+﻿using HITSBackEnd.Services.Account.UserRepository;
 using System.ComponentModel.DataAnnotations;
-
-<<<<<<<< HEAD:HITSBackEnd/Services/UserRepository/UserRepository/UsersTable.cs
-namespace HITSBackEnd.Services.Account.UserRepository
-========
 namespace HITSBackEnd.Services.UserRepository
->>>>>>>> editUserProfile:HITSBackEnd/Services/UserRepository/Users.cs
 {
     public class UsersTable
     {

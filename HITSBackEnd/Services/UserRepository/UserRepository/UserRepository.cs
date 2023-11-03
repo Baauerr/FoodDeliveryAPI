@@ -1,14 +1,6 @@
-<<<<<<<< HEAD:HITSBackEnd/Services/UserRepository/UserRepository/UserRepository.cs
-﻿using HITSBackEnd.DataBase;
-using HITSBackEnd.Dto.UserDTO;
-using HITSBackEnd.Services.Account.UserRepository;
-========
-﻿using Azure;
-using HITSBackEnd.baseClasses;
 using HITSBackEnd.DataBase;
 using HITSBackEnd.Dto.UserDTO;
 using HITSBackEnd.Services.Account;
->>>>>>>> editUserProfile:HITSBackEnd/Services/UserRepository/UserRepository.cs
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Identity;
 

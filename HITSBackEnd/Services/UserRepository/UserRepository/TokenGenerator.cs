@@ -29,12 +29,8 @@ namespace HITSBackEnd.Services.UserRepository
                 {
                 new Claim(ClaimTypes.Name, email)
                 }),
-<<<<<<<< HEAD:HITSBackEnd/Services/UserRepository/UserRepository/TokenGenerator.cs
-                Issuer = "HITSBackend", 
-                Audience = "HITSBackend"
-========
                 Issuer = "HITSBackend",
->>>>>>>> editUserProfile:HITSBackEnd/Services/UserRepository/TokenGenerator.cs
+                Audience = "HITSBackend"
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

@@ -4,6 +4,7 @@ using HITSBackEnd.Services.Account.IRepository;
 using HITSBackEnd.Services.Dishes.DishesRepository;
 using HITSBackEnd.Services.Orders;
 using HITSBackEnd.Services.UserCart.UserCartRepository;
+using HITSBackEnd.Services.UserRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
