@@ -130,7 +130,6 @@ namespace HITSBackEnd.Services.UserRepository
                     user.PhoneNumber = userUpdateData.PhoneNumber;
                 }
             }
-
             _db.SaveChanges();
         }
     }
