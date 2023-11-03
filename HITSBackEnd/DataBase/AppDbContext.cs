@@ -22,6 +22,7 @@ namespace HITSBackEnd.DataBase
         public DbSet <OrdersDishesTable> OrdersDishes { get; set; }
         
         public DbSet <OrdersTable> Orders {  get; set; }
+        public DbSet <RatingTable> DishesRating { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BlackListTokenTable>()
@@ -32,6 +33,8 @@ namespace HITSBackEnd.DataBase
                 .HasKey(c => new { c.UserEmail, c.Id });
             modelBuilder.Entity<OrdersDishesTable>()
                 .HasKey(c => new { c.OrderId, c.DishId });
+            modelBuilder.Entity<RatingTable>()
+                .HasKey(c => new { c.UserEmail, c.DishId });
         }
     }
 }

@@ -6,6 +6,8 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
     {
         [Key]
         public string DishId { get; set; }
-        public int Value { get; set; }
+        [Key]
+        public string UserEmail { get; set; }
+        public double Value { get; set; }
     }
 }
