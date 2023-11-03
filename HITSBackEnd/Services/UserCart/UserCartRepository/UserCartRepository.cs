@@ -24,7 +24,7 @@ namespace HITSBackEnd.Services.UserCart.UserCartRepository
             }
             else
             {
-                Cart cart = new Cart();
+                CartTable cart = new CartTable();
                 cart.DishId = id;
                 cart.UserEmail = email;
                 cart.AmountOfDish = 1;

@@ -1,6 +1,6 @@
 ﻿using HITSBackEnd.Dto.CartDTO;
 
-namespace HITSBackEnd.Services.UserCart.UserCartRepository.UserCartRepository
+namespace HITSBackEnd.Services.UserCart.UserCartRepository
 {
     public interface IUserCartRepository
     {

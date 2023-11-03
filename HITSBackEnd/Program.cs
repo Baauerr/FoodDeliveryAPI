@@ -1,9 +1,8 @@
 using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataBase;
-using HITSBackEnd.Services;
-using HITSBackEnd.Services.Account;
 using HITSBackEnd.Services.Account.IRepository;
 using HITSBackEnd.Services.Dishes.DishesRepository;
+using HITSBackEnd.Services.Orders;
 using HITSBackEnd.Services.UserCart.UserCartRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -50,6 +49,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDishesRepository, DishesRepository>();
 builder.Services.AddScoped<IUserCartRepository, UserCartRepository>();
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenGenerator>();
 
@@ -66,6 +66,8 @@ var key = builder.Configuration.GetValue<string>("ApiSettings:SecretKey");
 
 var issuer = builder.Configuration.GetValue<string>("ApiSettings:Issuer");
 
+var audience = builder.Configuration.GetValue<string>("ApiSettings:Audience");
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -81,8 +83,8 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
             ValidateIssuerSigningKey = true,
             ValidateLifetime = false,
-            ValidateAudience = false,
-           
+            ValidateAudience = true,
+            ValidAudience = audience,
         };
     });
 

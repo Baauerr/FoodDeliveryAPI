@@ -22,7 +22,7 @@ namespace HITSBackEnd.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HITSBackEnd.Services.Account.BlackListToken", b =>
+            modelBuilder.Entity("HITSBackEnd.Services.Account.BlackListTokenTable", b =>
                 {
                     b.Property<string>("userEmail")
                         .HasColumnType("text")
@@ -37,7 +37,7 @@ namespace HITSBackEnd.Migrations
                     b.ToTable("BlackListTokens");
                 });
 
-            modelBuilder.Entity("HITSBackEnd.Services.Account.UserRepository.Users", b =>
+            modelBuilder.Entity("HITSBackEnd.Services.Account.UserRepository.UsersTable", b =>
                 {
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -72,7 +72,7 @@ namespace HITSBackEnd.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("HITSBackEnd.Services.Dishes.DishesRepository.Dish", b =>
+            modelBuilder.Entity("HITSBackEnd.Services.Dishes.DishesRepository.DishTable", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,7 +104,52 @@ namespace HITSBackEnd.Migrations
                     b.ToTable("Dishes");
                 });
 
-            modelBuilder.Entity("HITSBackEnd.Services.UserCart.Cart", b =>
+            modelBuilder.Entity("HITSBackEnd.Services.Orders.OrdersDishesTable", b =>
+                {
+                    b.Property<string>("OrderId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DishId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.HasKey("OrderId", "DishId");
+
+                    b.ToTable("OrdersDishes");
+                });
+
+            modelBuilder.Entity("HITSBackEnd.Services.Orders.OrdersTable", b =>
+                {
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DeliveryTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserEmail", "Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("HITSBackEnd.Services.UserCart.UserCartRepository.CartTable", b =>
                 {
                     b.Property<string>("UserEmail")
                         .HasColumnType("text")
