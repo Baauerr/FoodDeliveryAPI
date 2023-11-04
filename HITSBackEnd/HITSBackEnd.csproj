@@ -32,7 +32,6 @@
     <Folder Include="Models\DishesModels\" />
     <Folder Include="Models\OrdersModels\" />
     <Folder Include="Models\CartModels\" />
-    <Folder Include="Services\Adresses\" />
   </ItemGroup>
 
 </Project>

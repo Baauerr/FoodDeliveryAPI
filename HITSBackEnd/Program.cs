@@ -17,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<AddressesDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("AddressDbConnection")));
+
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenBlacklistFilterAttribute>();
 builder.Services.AddEndpointsApiExplorer();
@@ -64,6 +67,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 8;
 });
 
+//AUTHORIZATION
+
 var key = builder.Configuration.GetValue<string>("ApiSettings:SecretKey");
 
 var issuer = builder.Configuration.GetValue<string>("ApiSettings:Issuer");
@@ -89,6 +94,9 @@ builder.Services.AddAuthentication(options =>
             ValidAudience = audience,
         };
     });
+
+
+//AUTHORIZATION 
 
 var app = builder.Build();
 
