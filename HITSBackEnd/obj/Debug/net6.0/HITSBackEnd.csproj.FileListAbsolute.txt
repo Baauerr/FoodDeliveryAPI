@@ -85,3 +85,15 @@ C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEn
 C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.Owin.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.Owin.Security.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.Owin.Security.Cookies.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.Owin.Security.OAuth.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Npgsql.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Owin.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Артем\source\repos\webNET-Hits-backend-aspnet-project-1\HITSBackEnd\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll
