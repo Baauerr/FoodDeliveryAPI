@@ -4,6 +4,7 @@ using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HITSBackEnd.Controllers
 {
@@ -18,6 +19,8 @@ namespace HITSBackEnd.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(DishTable), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 400)]
         public async Task<IActionResult> GetConcretteDish(string id)
         {
             var concretteDish = await _dishesRepository.GetConcretteDish(id);
@@ -29,6 +32,8 @@ namespace HITSBackEnd.Controllers
         [HttpGet("{id}/rating/check")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> RatingCheck(string id)
         {
             var userEmail = User.Identity.Name;
@@ -51,13 +56,9 @@ namespace HITSBackEnd.Controllers
         [HttpPost("{id}/rating")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
-        public async Task<IActionResult> SetRating([FromQuery] double ratingScore, string id)
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
+        public async Task<IActionResult> SetRating([Range(0, 10)]double ratingScore, string id)
         {
-            if (ratingScore > 10)
-            {
-                throw new Exception(ErrorCreator.CreateError("Оценка блюда не может быть больше 10"));
-            }
-
             var userEmail = User.Identity.Name;
 
             await _dishesRepository.SetRating(id, userEmail, ratingScore);

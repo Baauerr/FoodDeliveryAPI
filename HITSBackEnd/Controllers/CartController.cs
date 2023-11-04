@@ -1,6 +1,8 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
+using HITSBackEnd.Dto.CartDTO;
 using HITSBackEnd.Services.Dishes.DishesRepository;
 using HITSBackEnd.Services.UserCart.UserCartRepository;
+using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +21,7 @@ namespace HITSBackEnd.Controllers
         [HttpPost("dish/{dishId}")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> AddDishToCart(string dishId)
         {
             var email = User.Identity.Name;
@@ -27,6 +30,8 @@ namespace HITSBackEnd.Controllers
         }
         [HttpGet("")]
         [Authorize]
+        [ProducesResponseType(typeof(GetCartDTO), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public IActionResult GetUserCart()
         {
             var email = User.Identity.Name;
@@ -36,6 +41,7 @@ namespace HITSBackEnd.Controllers
         [HttpDelete("dish/{dishId}")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> DeleteDishFromCart(string dishId, [FromQuery] bool increase)
         {
             var email = User.Identity.Name;

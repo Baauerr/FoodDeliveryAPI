@@ -1,6 +1,6 @@
 using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataBase;
-using HITSBackEnd.Services.Account.IRepository;
+using HITSBackEnd.Errors;
 using HITSBackEnd.Services.Dishes.DishesRepository;
 using HITSBackEnd.Services.Orders;
 using HITSBackEnd.Services.UserCart.UserCartRepository;
@@ -51,6 +51,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDishesRepository, DishesRepository>();
 builder.Services.AddScoped<IUserCartRepository, UserCartRepository>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddTransient<ErrorsMiddleware>();
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenGenerator>();
 
@@ -91,12 +92,13 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureExceptionMiddleware();
 
 app.UseHttpsRedirection();
 

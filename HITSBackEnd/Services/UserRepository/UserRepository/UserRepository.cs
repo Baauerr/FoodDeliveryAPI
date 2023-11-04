@@ -32,7 +32,7 @@ namespace HITSBackEnd.Services.UserRepository
 
             if (user == null || !PasswordValidatoring.VerifyPassword(user.Password, loginRequestDTO.Password))
             {
-                throw new Exception(ErrorCreator.CreateError("Неверный email или пароль"));
+                throw new BadRequestException("Неверный email или пароль");
             }
             RegistrationLoginResponseDTO response = new RegistrationLoginResponseDTO
             {
@@ -45,11 +45,11 @@ namespace HITSBackEnd.Services.UserRepository
         {
             if (IsUniqueUser(registrationRequestDTO.Email))
             {
-                throw new Exception(ErrorCreator.CreateError("Пользователь с таким email уже существует"));
+                throw new BadRequestException("Пользователь с таким email уже существует");
             }
             if (!DataValidator.ValidatePhoneNumber(registrationRequestDTO.PhoneNumber))
             {
-                throw new Exception(ErrorCreator.CreateError("Неверный формат телефона"));
+                throw new BadRequestException("Неверный формат телефона");
             }
 
             var newUser = new UsersTable

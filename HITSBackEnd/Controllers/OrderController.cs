@@ -21,6 +21,8 @@ namespace HITSBackEnd.Controllers
         [HttpGet("{id}")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ConcretteOrderResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> GetConcretteOrder(string id)
         {
             var concretteOrderResponseDTO = await _ordersRepository.GetConcretteOrder(id);
@@ -31,6 +33,8 @@ namespace HITSBackEnd.Controllers
         [HttpGet("")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(List<OrderInList>), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public IActionResult GetListOfOrders()
         {
             var userEmail = User.Identity.Name;
@@ -42,6 +46,7 @@ namespace HITSBackEnd.Controllers
         [HttpPost("")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO)
         {
             if (TimeChecker.ValidTime(DateTime.UtcNow, newOrderRequestDTO.DeliveryTime))
@@ -51,7 +56,7 @@ namespace HITSBackEnd.Controllers
             }
             else
             {
-                throw new Exception(ErrorCreator.CreateError("Недостаточно времени для доставки"));
+                throw new BadRequestException("Недостаточно времени для доставки");
             }
             return Ok();
         }
@@ -60,6 +65,7 @@ namespace HITSBackEnd.Controllers
         [HttpPost("{id}/status")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> ConfirmOrderDelivery(string id)
         {
             await _ordersRepository.ConfirmOrderDelivery(id);

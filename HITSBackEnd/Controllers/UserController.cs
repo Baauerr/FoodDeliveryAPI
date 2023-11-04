@@ -19,17 +19,19 @@ namespace HITSBackEnd.Controllers
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(typeof(RegistrationLoginResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 400)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
             var RegistrationLoginResponceDTO = await _userRepository.Login(model);
-            if (string.IsNullOrEmpty(RegistrationLoginResponceDTO.Token))
-            {
-                throw new Exception(ErrorCreator.CreateError("Неверный формат телефона"));
-            }
             return Ok(RegistrationLoginResponceDTO);
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(typeof(RegistrationLoginResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 400)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {
             var RegistrationLoginResponceDTO = await _userRepository.Register(model);
@@ -39,6 +41,7 @@ namespace HITSBackEnd.Controllers
         [HttpGet("profile")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> GetProfile()
         {
             var ProfileResponseDTO = await _userRepository.Profile(User.Identity.Name);
@@ -48,6 +51,7 @@ namespace HITSBackEnd.Controllers
         [HttpPost("logout")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> LogOut()
         {
             string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
@@ -59,6 +63,7 @@ namespace HITSBackEnd.Controllers
         [HttpPut("profile")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> editUserProfile([FromBody] EditUserInfoRequestDTO model)
         {
             string email = User.Identity.Name;

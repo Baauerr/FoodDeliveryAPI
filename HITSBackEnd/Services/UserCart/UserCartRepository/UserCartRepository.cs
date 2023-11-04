@@ -62,7 +62,7 @@ namespace HITSBackEnd.Services.UserCart.UserCartRepository
 
             if (cartItem == null)
             {
-                throw new Exception(ErrorCreator.CreateError("Такого блюда в корзине пользователя нет"));
+                throw new BadRequestException("Такого блюда в корзине пользователя нет");
             }
 
             if (!increase || cartItem.AmountOfDish == 1)
