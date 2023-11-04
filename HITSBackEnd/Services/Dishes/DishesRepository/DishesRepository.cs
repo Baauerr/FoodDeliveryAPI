@@ -37,7 +37,7 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             Guid idGuid;
             if (!Guid.TryParse(id, out idGuid))
             {
-                throw new Exception(ErrorCreator.CreateError("Такого блюда нет в меню"));
+                throw new BadRequestException("Такого блюда нет в меню");
             }
 
             var dish = await _db.Dishes.FirstOrDefaultAsync(u => u.Id == idGuid);
@@ -116,7 +116,7 @@ namespace HITSBackEnd.Services.Dishes.DishesRepository
             }
             else
             {
-                throw new Exception(ErrorCreator.CreateError("Такой страницы нет"));
+                throw new BadRequestException("Такой страницы нет");
             }
 
             PaginationDTO paginationDTO = new PaginationDTO();

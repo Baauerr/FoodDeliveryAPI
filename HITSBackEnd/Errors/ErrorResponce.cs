@@ -5,7 +5,7 @@ namespace HITSBackEnd.Swagger
 {
     public class ErrorResponseModel
     {
-        public HttpStatusCode status { get; set; }
+        public int status { get; set; }
         public string message { get; set; }
     }
 }
