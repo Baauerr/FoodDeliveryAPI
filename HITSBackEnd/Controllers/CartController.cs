@@ -37,10 +37,10 @@ namespace HITSBackEnd.Controllers
         [ProducesResponseType(typeof(ErrorResponseModel), 401)]
         [ProducesResponseType(typeof(ErrorResponseModel), 401)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
-        public IActionResult GetUserCart()
+        public async Task<IActionResult> GetUserCart()
         {
             var email = User.Identity.Name;
-            var UserCartDTO = _userCartRepository.GetUserCart(email);
+            var UserCartDTO = await _userCartRepository.GetUserCart(email);
             return Ok(UserCartDTO);
         }
 

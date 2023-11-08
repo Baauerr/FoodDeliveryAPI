@@ -20,6 +20,11 @@ namespace HITSBackEnd.Services.Dishes
 
         public async Task<bool> RatingCheck(Guid dishId, string userEmail)
         {
+            if (userEmail == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
             var checkDishInMenu = await _db.Dishes.AnyAsync(dish => dish.Id == dishId);
 
             if (!checkDishInMenu) 
@@ -27,10 +32,10 @@ namespace HITSBackEnd.Services.Dishes
                 throw new NotFoundException("Такого блюда нет в меню");
             }
 
-            var ordersId = _db.OrdersDishes
+            var ordersId = await _db.OrdersDishes
                 .Where(d => d.DishId == dishId)
                 .Select(d => d.OrderId)
-                .ToList();
+                .ToListAsync();
 
             var userOrderChecker = await _db.Orders.AnyAsync(order => order.UserEmail == userEmail && ordersId.Contains(order.Id));
 
@@ -39,7 +44,6 @@ namespace HITSBackEnd.Services.Dishes
 
         public async Task<DishTable> GetConcretteDish(Guid id)
         {
-
             var dish = await _db.Dishes.FirstOrDefaultAsync(u => u.Id == id);
 
             if (dish == null)
@@ -145,6 +149,10 @@ namespace HITSBackEnd.Services.Dishes
 
         public async Task SetRating(Guid dishId, string userEmail, double rate)
         {
+            if (userEmail == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
 
             if (!(await RatingCheck(dishId, userEmail)))
             {
@@ -160,14 +168,14 @@ namespace HITSBackEnd.Services.Dishes
                     UserEmail = userEmail,
                     Value = rate
                 };
-                _db.DishesRating.Add(newRate);
+                await _db.DishesRating.AddAsync(newRate);
             }
             else
             {
                 dishToRate.Value = rate;
             }
             await _db.SaveChangesAsync();
-            updateDishRate(dishId);
+            await updateDishRate(dishId);
 
         }
         private async Task updateDishRate(Guid DishId)

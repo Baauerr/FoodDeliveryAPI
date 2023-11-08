@@ -22,18 +22,18 @@ namespace HITSBackEnd.Controllers
         [HttpGet("search")]
         [ProducesResponseType(typeof(List<AddressElementDTO>), 200)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
-        public IActionResult GetBuilding(long parentObjId, string? query)
+        public async Task<IActionResult> GetBuilding(long parentObjId, string? query)
         {
-            var building = _adressRepository.GetBuilding(parentObjId, query);
+            var building = await _adressRepository.GetBuilding(parentObjId, query);
             return Ok(building);
         }
 
         [HttpGet("chain")]
         [ProducesResponseType(typeof(List<AddressElementDTO>), 200)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
-        public IActionResult GetChain(string objectId)
+        public async Task<IActionResult> GetChain(string objectId)
         {
-            var chain = _adressRepository.GetChain(objectId);
+            var chain = await _adressRepository.GetChain(objectId);
             return Ok(chain);
         }
     }

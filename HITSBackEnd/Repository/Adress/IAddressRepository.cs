@@ -6,7 +6,7 @@ namespace HITSBackEnd.Services.Adresses
     public interface IAddressRepository
     {
 
-        public List<AddressElementDTO> GetBuilding(long parentObjId, string query);
-        public List<AddressElementDTO> GetChain(string objectGuid);
+        public Task<List<AddressElementDTO>> GetBuilding(long parentObjId, string query);
+        public Task<List<AddressElementDTO>> GetChain(string objectGuid);
     }
 }

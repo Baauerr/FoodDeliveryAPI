@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace HITSBackEnd.Models.AddressModels
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum HousesLevel
     {
+        [Description("Void")] Void,
         [Description("Владение")] Ownership,
         [Description("Дом")] House,
         [Description("Домовладение")] Household,

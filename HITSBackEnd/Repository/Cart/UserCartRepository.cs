@@ -17,6 +17,12 @@ namespace HITSBackEnd.Repository.UserCart
         }
         public async Task AddDishToCart(Guid id, string email)
         {
+            if (email == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
+
             if (!_db.Dishes.Any(d => d.Id == id)) {
                 throw new NotFoundException("Такого блюда нет в меню");
             }
@@ -37,9 +43,14 @@ namespace HITSBackEnd.Repository.UserCart
                 await _db.SaveChangesAsync();
             }
         }
-        public GetCartDTO GetUserCart(string email)
+        public async Task<GetCartDTO> GetUserCart(string email)
         {
-            var userCartItems = _db.Carts
+            if (email == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
+            var userCartItems = await _db.Carts
             .Where(cart => cart.UserEmail == email)
             .Join(
                 _db.Dishes,
@@ -54,7 +65,7 @@ namespace HITSBackEnd.Repository.UserCart
                     Amount = cart.AmountOfDish,
                     Image = dish.Photo
                 })
-             .ToList();
+             .ToListAsync();
             GetCartDTO cartDTO = new GetCartDTO();
             cartDTO.GetDishesDTO = userCartItems;
             return cartDTO;
@@ -63,6 +74,11 @@ namespace HITSBackEnd.Repository.UserCart
 
         public async Task RemoveDishFromCart(string email, Guid dishId, bool increase)
         {
+            if (email == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
             var cartItem = await _db.Carts.FirstOrDefaultAsync(cart => cart.UserEmail == email && cart.DishId == dishId);
 
             if (cartItem == null)

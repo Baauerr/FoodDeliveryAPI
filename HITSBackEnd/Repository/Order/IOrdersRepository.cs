@@ -5,7 +5,7 @@ namespace HITSBackEnd.Services.Orders
     public interface IOrdersRepository
     {
         public Task<ConcretteOrderResponseDTO> GetConcretteOrder(Guid orderId);
-        public List<OrderInList> GetListOfOrders(string userEmail);
+        public Task<List<OrderInList>> GetListOfOrders(string userEmail);
         public Task CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO, string userEmail);
         public Task ConfirmOrderDelivery(Guid orderId, string userEmail);
     }

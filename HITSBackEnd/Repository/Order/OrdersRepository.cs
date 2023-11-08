@@ -22,6 +22,11 @@ namespace HITSBackEnd.Services.Orders
         }
         public async Task CreateNewOrder(NewOrderRequestDTO newOrderRequestDTO, string userEmail)
         {
+            if (userEmail == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
             var isUserCartNotZero = _db.Carts.Any(cart => cart.UserEmail == userEmail);
 
             if (!isUserCartNotZero)
@@ -31,7 +36,7 @@ namespace HITSBackEnd.Services.Orders
 
             if (!_timeChecker.ValidTime(newOrderRequestDTO.DeliveryTime))
             {
-                throw new BadRequestException("Недостаточно времени для заказа");
+                throw new BadRequestException("Недостаточно времени для доставки заказа");
             }
 
             if (!_addressValidator.isAddressExist(newOrderRequestDTO.addressId))
@@ -101,9 +106,14 @@ namespace HITSBackEnd.Services.Orders
             return concretteOrder;
         }
 
-        public List<OrderInList> GetListOfOrders(string userEmail)
+        public async Task<List<OrderInList>> GetListOfOrders(string userEmail)
         {
-            var allOrders = _db.Orders.Where(order => order.UserEmail == userEmail).ToList();
+            if (userEmail == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
+            var allOrders = await _db.Orders.Where(order => order.UserEmail == userEmail).ToListAsync();
 
             if (allOrders.Count == 0)
             {
@@ -131,6 +141,11 @@ namespace HITSBackEnd.Services.Orders
 
         public async Task ConfirmOrderDelivery(Guid orderId, string userEmail)
         {
+            if (userEmail == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
             var order = await _db.Orders.FirstOrDefaultAsync(o => o.Id == orderId && o.UserEmail == userEmail);
 
             if (order == null)

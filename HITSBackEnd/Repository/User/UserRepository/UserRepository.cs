@@ -35,7 +35,6 @@ namespace HITSBackEnd.Repository.User.UserRepository
         {
             var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == loginRequestDTO.Email);
 
-
             if (user == null || !PasswordVerificator.VerifyPassword(user.Password, loginRequestDTO.Password))
             {
                 throw new BadRequestException("Неверный email или пароль");
@@ -102,7 +101,14 @@ namespace HITSBackEnd.Repository.User.UserRepository
 
         public async Task<ProfileResponseDTO> Profile(string email)
         {
+            if (email == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            
 
             if (user == null)
             {
@@ -125,6 +131,11 @@ namespace HITSBackEnd.Repository.User.UserRepository
 
         public async Task LogOut(string token, string email)
         {
+            if (email == null)
+            {
+                throw new BadRequestException("Токен не валиден");
+            }
+
             BlackListTokenTable newToken = new BlackListTokenTable();
             newToken.Token = token;
             newToken.userEmail = email;
@@ -137,9 +148,7 @@ namespace HITSBackEnd.Repository.User.UserRepository
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             user.FullName = userUpdateData.FullName ?? user.FullName;
-            user.BirthDate = userUpdateData.BirthDate ?? user.BirthDate;
             user.Gender = userUpdateData.Gender ?? user.Gender;
-            user.Address = userUpdateData.AddressId ?? user.Address;
 
             if (userUpdateData.AddressId != null)
             {
@@ -152,11 +161,11 @@ namespace HITSBackEnd.Repository.User.UserRepository
 
             if (userUpdateData.BirthDate != null)
             {
-                if (!_userInfoValidator.ValidateBirthDate(userUpdateData.BirthDate.Value))
+                if (!_userInfoValidator.ValidateBirthDate(userUpdateData.BirthDate))
                 {
                     throw new BadRequestException("Нереалистичная дата рождения");
                 }
-                user.BirthDate = userUpdateData.BirthDate.Value;
+                user.BirthDate = userUpdateData.BirthDate;
             }
 
             if (userUpdateData.PhoneNumber != null)

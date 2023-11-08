@@ -40,10 +40,10 @@ namespace HITSBackEnd.Controllers
         [ProducesResponseType(typeof(List<OrderInList>), 200)]
         [ProducesResponseType(typeof(ErrorResponseModel), 404)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
-        public IActionResult GetListOfOrders()
+        public async Task<IActionResult> GetListOfOrders()
         {
             var userEmail = User.Identity.Name;
-            var orderResponseDTO = _ordersRepository.GetListOfOrders(userEmail);
+            var orderResponseDTO = await _ordersRepository.GetListOfOrders(userEmail);
             return Ok(orderResponseDTO);
         }
 

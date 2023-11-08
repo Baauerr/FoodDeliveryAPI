@@ -2,8 +2,8 @@
 using HITSBackEnd.Dto.AdressDTO;
 using HITSBackEnd.Models.AddressModels;
 using HITSBackEnd.Repository.Adress;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Runtime.Intrinsics.Arm;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace HITSBackEnd.Services.Adresses
 {
@@ -13,9 +13,9 @@ namespace HITSBackEnd.Services.Adresses
         public AddressRepository(AddressesDbContext addressesDbContext) {
             _db = addressesDbContext;
         }
-        public List<AddressElementDTO> GetBuilding(long parentObjId, string query)
+        public async Task<List<AddressElementDTO>> GetBuilding(long parentObjId, string? query)
         {
-            var queryResult = (from hierarchy in _db.AsAdmHierarchy
+            var queryResult = await (from hierarchy in _db.AsAdmHierarchy
                                where hierarchy.parentobjid == parentObjId
                                join adm in _db.AsAddrObjects on hierarchy.objectId equals adm.objectId into admJoin 
                                from adm in admJoin.DefaultIfEmpty()
@@ -30,19 +30,16 @@ namespace HITSBackEnd.Services.Adresses
                                    objectGuid = house != null ? house.objectGuid : (adm != null ? adm.objectGuid : Guid.Empty),
                                    text = house != null ? house.houseNum : (adm != null ? adm.typename + " " + adm.name : string.Empty),
                                    objectLevel = house != null
-                                       ? ((HousesLevel)int.Parse(house.houseType)).ToString()
+                                       ? ((HousesLevel)house.houseType).ToString()
                                        : ((AddressLevel)int.Parse(adm.level)).ToString(),
                                    objectLevelText = house != null
-                                       ? AddressesHelper.GetDescription((HousesLevel)int.Parse(house.houseType))
+                                       ? AddressesHelper.GetDescription((HousesLevel)house.houseType)
                                        : AddressesHelper.GetDescription((AddressLevel)int.Parse(adm.level))
-                               }).ToList();
-
+                               }).ToListAsync();
             return queryResult;
         }
 
-        
-
-        public List<AddressElementDTO> GetChain(string objectGuid)
+        public async Task<List<AddressElementDTO>> GetChain(string objectGuid)
         {
             throw new NotImplementedException();
         }

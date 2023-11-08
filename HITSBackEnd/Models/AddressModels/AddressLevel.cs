@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace HITSBackEnd.Models.AddressModels
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AddressLevel
     {
+        [Description("Void")] Void,
         [Description("Субъект РФ")] Region,
         [Description("Административный район")] AdministrativeArea,
         [Description("Муниципальный район")] MunicipalArea,
