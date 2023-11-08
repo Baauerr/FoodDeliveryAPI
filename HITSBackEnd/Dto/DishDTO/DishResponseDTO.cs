@@ -1,4 +1,4 @@
-﻿using HITSBackEnd.Services.Dishes.DishesRepository;
+﻿using HITSBackEnd.Models.DishesModels;
 
 namespace HITSBackEnd.Dto.DishDTO
 {

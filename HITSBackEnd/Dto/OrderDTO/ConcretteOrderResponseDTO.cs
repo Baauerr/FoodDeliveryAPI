@@ -1,4 +1,4 @@
-﻿using HITSBackEnd.Services.Orders;
+﻿using HITSBackEnd.Models.OrdersModels;
 
 namespace HITSBackEnd.Dto.OrderDTO
 {
@@ -10,6 +10,6 @@ namespace HITSBackEnd.Dto.OrderDTO
         public Status Status { get; set; }
         public double Price { get; set; }
         public List<DishInOrderDTO> DishInOrder { get; set; }
-        public string Adress { get; set; }
+        public Guid Adress { get; set; }
     }
 }

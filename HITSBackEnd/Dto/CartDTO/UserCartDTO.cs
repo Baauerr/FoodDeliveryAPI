@@ -4,7 +4,7 @@ namespace HITSBackEnd.Dto.CartDTO
 {
     public class UserCartDTO
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
         public double TotalPrice { get; set; }

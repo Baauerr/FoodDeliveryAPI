@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using HITSBackEnd.DataBase;
+using HITSBackEnd.DataBaseContext;
 
 namespace HITSBackEnd.Controllers.AttributeUsage
 {

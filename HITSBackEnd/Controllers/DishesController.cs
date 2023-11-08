@@ -1,5 +1,7 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
-using HITSBackEnd.Services.Dishes.DishesRepository;
+using HITSBackEnd.Dto.DishDTO;
+using HITSBackEnd.Models.DishesModels;
+using HITSBackEnd.Services.Dishes;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +22,8 @@ namespace HITSBackEnd.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(DishTable), 200)]
-        [ProducesResponseType(typeof(ErrorResponseModel), 400)]
-        public async Task<IActionResult> GetConcretteDish(string id)
+        [ProducesResponseType(typeof(ErrorResponseModel), 404)]
+        public async Task<IActionResult> GetConcretteDish(Guid id)
         {
             var concretteDish = await _dishesRepository.GetConcretteDish(id);
 
@@ -33,8 +35,10 @@ namespace HITSBackEnd.Controllers
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 401)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 404)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
-        public async Task<IActionResult> RatingCheck(string id)
+        public async Task<IActionResult> RatingCheck(Guid id)
         {
             var userEmail = User.Identity.Name;
 
@@ -45,6 +49,9 @@ namespace HITSBackEnd.Controllers
 
 
         [HttpGet]
+        [ProducesResponseType(typeof(DishPageResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 400)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public IActionResult GetDishes([FromQuery] List<Category> categories, [FromQuery] bool? isVegetarian, [FromQuery] SortingTypes sorting, [FromQuery] int page)
         {
             var dishesPage = _dishesRepository.GetDishesPage(categories, isVegetarian, sorting, page);
@@ -56,8 +63,10 @@ namespace HITSBackEnd.Controllers
         [HttpPost("{id}/rating")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 401)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 403)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
-        public async Task<IActionResult> SetRating([Range(0, 10)]double ratingScore, string id)
+        public async Task<IActionResult> SetRating([Range(0, 10)]double ratingScore, Guid id)
         {
             var userEmail = User.Identity.Name;
 

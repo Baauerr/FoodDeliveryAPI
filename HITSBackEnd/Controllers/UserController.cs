@@ -4,7 +4,7 @@ using HITSBackEnd.Services.UserRepository;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace HITSBackEnd.Controllers
 {
@@ -41,6 +41,7 @@ namespace HITSBackEnd.Controllers
         [HttpGet("profile")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 401)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> GetProfile()
         {
@@ -51,6 +52,7 @@ namespace HITSBackEnd.Controllers
         [HttpPost("logout")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 401)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> LogOut()
         {
@@ -63,6 +65,8 @@ namespace HITSBackEnd.Controllers
         [HttpPut("profile")]
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
+        [ProducesResponseType(typeof(ErrorResponseModel), 400)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 401)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> editUserProfile([FromBody] EditUserInfoRequestDTO model)
         {

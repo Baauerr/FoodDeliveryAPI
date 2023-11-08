@@ -2,7 +2,7 @@
 {
     public class DishInOrderDTO
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public double price { get; set; }
         public double TotalPrice { get; set; }

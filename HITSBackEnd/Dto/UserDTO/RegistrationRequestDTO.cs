@@ -1,4 +1,4 @@
-﻿using HITSBackEnd.Services.Account.UserRepository;
+﻿using HITSBackEnd.Models.AccountModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace HITSBackEnd.Dto.UserDTO
@@ -13,6 +13,6 @@ namespace HITSBackEnd.Dto.UserDTO
         [DataType(DataType.EmailAddress)]
         [EmailAddress(ErrorMessage = "Неправильный формат адреса электронной почты.")]
         public string Email { get; set; }
-        public string Address { get; set; }
+        public Guid Address { get; set; }
     }
 }

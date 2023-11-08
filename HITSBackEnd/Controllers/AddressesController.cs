@@ -1,4 +1,5 @@
-﻿using HITSBackEnd.Dto.UserDTO;
+﻿using HITSBackEnd.Dto.AdressDTO;
+using HITSBackEnd.Dto.UserDTO;
 using HITSBackEnd.Services.Adresses;
 using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Mvc;
@@ -11,22 +12,24 @@ namespace HITSBackEnd.Controllers
     [ProducesResponseType(typeof(ErrorResponseModel), 500)]
     public class AdressController : ControllerBase
     {
-        private readonly IAdressRepository _adressRepository;
+        private readonly IAddressRepository _adressRepository;
 
-        public AdressController(IAdressRepository buildingRepository)
+        public AdressController(IAddressRepository buildingRepository)
         {
             _adressRepository = buildingRepository;
         }
 
         [HttpGet("search")]
-        public IActionResult GetBuilding(int parentObjId, string query)
+        [ProducesResponseType(typeof(List<AddressElementDTO>), 200)]
+        [ProducesResponseType(typeof(ErrorResponseModel), 500)]
+        public IActionResult GetBuilding(long parentObjId, string? query)
         {
             var building = _adressRepository.GetBuilding(parentObjId, query);
             return Ok(building);
         }
 
         [HttpGet("chain")]
-        [ProducesResponseType(typeof(RegistrationLoginResponseDTO), 200)]
+        [ProducesResponseType(typeof(List<AddressElementDTO>), 200)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public IActionResult GetChain(string objectId)
         {

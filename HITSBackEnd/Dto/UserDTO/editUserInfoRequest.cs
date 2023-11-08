@@ -1,4 +1,4 @@
-﻿using HITSBackEnd.Services.Account.UserRepository;
+﻿using HITSBackEnd.Models.AccountModels;
 
 namespace HITSBackEnd.Dto.UserDTO
 {
@@ -7,7 +7,7 @@ namespace HITSBackEnd.Dto.UserDTO
         public string? FullName { get; set; }
         public DateTime? BirthDate { get; set; }
         public Gender? Gender { get; set; }
-        public string? AddressId { get; set; }
+        public Guid? AddressId { get; set; }
         public string? PhoneNumber { get; set; }
     }
 }
