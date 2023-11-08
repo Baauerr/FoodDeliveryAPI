@@ -1,5 +1,8 @@
 ﻿using HITSBackEnd.DataBaseContext;
 using HITSBackEnd.Models.AccountModels;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace HITSBackEnd.AdditionalTasks
 {
@@ -15,14 +18,16 @@ namespace HITSBackEnd.AdditionalTasks
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(DoCleanup, null, TimeSpan.Zero, TimeSpan.FromHours(1)); 
-
+            _timer = new Timer(DoCleanup, null, TimeSpan.Zero, TimeSpan.FromHours(1));
             return Task.CompletedTask;
         }
 
         private void DoCleanup(object state)
         {
-          //Тут будет жосская очистка токенов
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var TokensToDelete = _db.BlackListTokens
+                .Where(t => (tokenHandler.ReadToken(t.Token)).ValidTo >= DateTime.UtcNow).ToList();
+            _db.BlackListTokens.RemoveRange(TokensToDelete);
         }
     }
 }

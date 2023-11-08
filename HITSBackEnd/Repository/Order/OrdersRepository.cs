@@ -106,7 +106,7 @@ namespace HITSBackEnd.Services.Orders
             return concretteOrder;
         }
 
-        public async Task<List<OrderInList>> GetListOfOrders(string userEmail)
+        public async Task<List<OrderInListDTO>> GetListOfOrders(string userEmail)
         {
             if (userEmail == null)
             {
@@ -120,11 +120,11 @@ namespace HITSBackEnd.Services.Orders
                 throw new NotFoundException("У пользователя нет заказов");
             }
 
-            List<OrderInList> listOfOrders = new List<OrderInList>();
+            List<OrderInListDTO> listOfOrders = new List<OrderInListDTO>();
 
             foreach (var order in allOrders)
             {
-                OrderInList orderInList = new OrderInList
+                OrderInListDTO orderInList = new OrderInListDTO
                 {
                     Id = order.Id,
                     DeliveryTime = order.DeliveryTime,

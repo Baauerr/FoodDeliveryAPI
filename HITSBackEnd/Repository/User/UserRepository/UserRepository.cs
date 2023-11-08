@@ -108,8 +108,6 @@ namespace HITSBackEnd.Repository.User.UserRepository
 
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
-            
-
             if (user == null)
             {
                 throw new NotFoundException("Такого пользователя не существует");   
@@ -145,6 +143,12 @@ namespace HITSBackEnd.Repository.User.UserRepository
 
         public async Task EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email)
         {
+
+            if (email == null)
+            {
+                throw new NotFoundException("Такого пользователя не существует");
+            }
+
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             user.FullName = userUpdateData.FullName ?? user.FullName;

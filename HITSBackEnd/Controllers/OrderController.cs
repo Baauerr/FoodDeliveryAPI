@@ -37,7 +37,7 @@ namespace HITSBackEnd.Controllers
         [Authorize]
         [ServiceFilter(typeof(TokenBlacklistFilterAttribute))]
         [ProducesResponseType(typeof(ErrorResponseModel), 401)]
-        [ProducesResponseType(typeof(List<OrderInList>), 200)]
+        [ProducesResponseType(typeof(List<OrderInListDTO>), 200)]
         [ProducesResponseType(typeof(ErrorResponseModel), 404)]
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> GetListOfOrders()

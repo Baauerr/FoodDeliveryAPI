@@ -2,7 +2,7 @@
 
 namespace HITSBackEnd.Dto.OrderDTO
 {
-    public class OrderInList
+    public class OrderInListDTO
     {
         public Guid Id { get; set; }
         public DateTime DeliveryTime { get; set; }
