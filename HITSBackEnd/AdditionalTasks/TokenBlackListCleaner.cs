@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace HITSBackEnd.AdditionalTasks
 {
-    public class TokenBlackListCleaner
+    public class TokenBlackListCleaner: IHostedService
     {
         private readonly AppDbContext _db;
         private Timer _timer;
@@ -19,6 +19,12 @@ namespace HITSBackEnd.AdditionalTasks
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer = new Timer(DoCleanup, null, TimeSpan.Zero, TimeSpan.FromHours(1));
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            _timer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
 
