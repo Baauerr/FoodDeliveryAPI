@@ -7,27 +7,27 @@ namespace HITSBackEnd.Controllers.AttributeUsage
     [AttributeUsage(AttributeTargets.Method)]
     public class TokenBlacklistFilterAttribute : ActionFilterAttribute
     {
-        private readonly AppDbContext _tokenBlacklist;
-
-        public TokenBlacklistFilterAttribute(AppDbContext tokenBlacklist)
+        private readonly RedisRepository _redisRepository;
+        
+        public TokenBlacklistFilterAttribute(RedisRepository redisRepository)
         {
-            _tokenBlacklist = tokenBlacklist;
+            _redisRepository = redisRepository;
         }
 
-        public bool IsTokenInBlacklist(string token)
+        public async Task<bool> IsTokenInBlacklist(string token)
         {
-            return _tokenBlacklist.BlackListTokens.Any(t => t.Token == token);
+            return await _redisRepository.IsBlacklisted(token);
         }
-
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext  context, ActionExecutionDelegate next)
         {
             var token = context.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            if (IsTokenInBlacklist(token))
+            if (await IsTokenInBlacklist(token))
             {
                 context.Result = new UnauthorizedObjectResult("Токен не действителен.");
+                return;
             }
-            base.OnActionExecuting(context);
+            await base.OnActionExecutionAsync(context, next);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.Dto.UserDTO;
+using HITSBackEnd.Exceptions;
 using HITSBackEnd.Services.UserRepository;
-using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +11,11 @@ namespace HITSBackEnd.Controllers
     [Route("api/account")]
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -24,7 +24,7 @@ namespace HITSBackEnd.Controllers
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO model)
         {
-            var RegistrationLoginResponceDTO = await _userRepository.Login(model);
+            var RegistrationLoginResponceDTO = await _userService.Login(model);
             return Ok(RegistrationLoginResponceDTO);
         }
 
@@ -34,7 +34,7 @@ namespace HITSBackEnd.Controllers
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
         {
-            var RegistrationLoginResponceDTO = await _userRepository.Register(model);
+            var RegistrationLoginResponceDTO = await _userService.Register(model);
             return Ok(RegistrationLoginResponceDTO);
         }
 
@@ -45,7 +45,7 @@ namespace HITSBackEnd.Controllers
         [ProducesResponseType(typeof(ErrorResponseModel), 500)]
         public async Task<IActionResult> GetProfile()
         {
-            var ProfileResponseDTO = await _userRepository.Profile(User.Identity.Name);
+            var ProfileResponseDTO = await _userService.Profile(User.Identity.Name);
             return Ok(ProfileResponseDTO);
         }
 
@@ -58,7 +58,7 @@ namespace HITSBackEnd.Controllers
         {
             string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             string email = User.Identity.Name;
-            await _userRepository.LogOut(token, email);
+            await _userService.LogOut(token, email);
             return Ok();
         }
 
@@ -71,7 +71,7 @@ namespace HITSBackEnd.Controllers
         public async Task<IActionResult> editUserProfile([FromBody] EditUserInfoRequestDTO model)
         {
             string email = User.Identity.Name;
-            await _userRepository.EditUserInfo(model, email);
+            await _userService.EditUserInfo(model, email);
             return Ok();
         }
 

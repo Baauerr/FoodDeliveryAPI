@@ -1,8 +1,8 @@
 ﻿using HITSBackEnd.DataBaseContext;
 using HITSBackEnd.Dto.CartDTO;
+using HITSBackEnd.Exceptions;
 using HITSBackEnd.Models.CartModels;
 using HITSBackEnd.Services.UserCart;
-using HITSBackEnd.Swagger;
 using Microsoft.EntityFrameworkCore;
 
 namespace HITSBackEnd.Repository.UserCart

@@ -1,15 +1,12 @@
-using HITSBackEnd.AdditionalTasks;
 using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataBase;
 using HITSBackEnd.DataBaseContext;
 using HITSBackEnd.DataValidation;
-using HITSBackEnd.Errors;
-using HITSBackEnd.Repository.User.UserRepository;
 using HITSBackEnd.Repository.UserCart;
 using HITSBackEnd.Repository.UserRepository;
-using HITSBackEnd.Services.Adresses;
+using HITSBackEnd.Services.Adress;
 using HITSBackEnd.Services.Dishes;
-using HITSBackEnd.Services.Orders;
+using HITSBackEnd.Services.Order;
 using HITSBackEnd.Services.UserCart;
 using HITSBackEnd.Services.UserRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,16 +15,23 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using HITSBackEnd.Exceptions;
+using HITSBackEnd.Services.Adress;
+using HITSBackEnd.Services.Dish;
+using HITSBackEnd.Services.User.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddHostedService<TokenBlackListCleaner>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<AddressesDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("AddressDbConnection")));
+
+builder.Services.AddSingleton<RedisRepository>(
+    new RedisRepository(builder.Configuration.GetConnectionString("RedisDatabase")));
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<TokenBlacklistFilterAttribute>();
@@ -59,7 +63,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDishesRepository, DishesRepository>();
 builder.Services.AddScoped<IUserCartRepository, UserCartRepository>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
@@ -118,6 +122,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+//DB init
+using var serviceScope = app.Services.CreateScope();
+var dbContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
+dbContext?.Database.Migrate();
 
 app.ConfigureExceptionMiddleware();
 

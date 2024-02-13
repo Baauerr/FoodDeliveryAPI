@@ -1,8 +1,8 @@
 ﻿using HITSBackEnd.Controllers.AttributeUsage;
 using HITSBackEnd.DataValidation;
 using HITSBackEnd.Dto.OrderDTO;
-using HITSBackEnd.Services.Orders;
-using HITSBackEnd.Swagger;
+using HITSBackEnd.Exceptions;
+using HITSBackEnd.Services.Order;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

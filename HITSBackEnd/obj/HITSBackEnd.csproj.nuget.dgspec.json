@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Артем\\source\\repos\\webNET-Hits-backend-aspnet-project-1\\HITSBackEnd\\HITSBackEnd.csproj": {}
+    "C:\\Users\\Артем\\RiderProjects\\FoodDeliveryAPI\\HITSBackEnd\\HITSBackEnd.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Артем\\source\\repos\\webNET-Hits-backend-aspnet-project-1\\HITSBackEnd\\HITSBackEnd.csproj": {
+    "C:\\Users\\Артем\\RiderProjects\\FoodDeliveryAPI\\HITSBackEnd\\HITSBackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Артем\\source\\repos\\webNET-Hits-backend-aspnet-project-1\\HITSBackEnd\\HITSBackEnd.csproj",
+        "projectUniqueName": "C:\\Users\\Артем\\RiderProjects\\FoodDeliveryAPI\\HITSBackEnd\\HITSBackEnd.csproj",
         "projectName": "HITSBackEnd",
-        "projectPath": "C:\\Users\\Артем\\source\\repos\\webNET-Hits-backend-aspnet-project-1\\HITSBackEnd\\HITSBackEnd.csproj",
+        "projectPath": "C:\\Users\\Артем\\RiderProjects\\FoodDeliveryAPI\\HITSBackEnd\\HITSBackEnd.csproj",
         "packagesPath": "C:\\Users\\Артем\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Артем\\source\\repos\\webNET-Hits-backend-aspnet-project-1\\HITSBackEnd\\obj\\",
+        "outputPath": "C:\\Users\\Артем\\RiderProjects\\FoodDeliveryAPI\\HITSBackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Артем\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -80,6 +80,10 @@
               "target": "Package",
               "version": "[7.0.11, )"
             },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.7.17, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
@@ -104,6 +108,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.25, 6.0.25]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.25, 6.0.25]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.25, 6.0.25]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.25, 6.0.25]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -112,7 +134,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

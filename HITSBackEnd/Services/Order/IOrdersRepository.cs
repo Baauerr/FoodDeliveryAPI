@@ -1,6 +1,6 @@
 ﻿using HITSBackEnd.Dto.OrderDTO;
 
-namespace HITSBackEnd.Services.Orders
+namespace HITSBackEnd.Services.Order
 {
     public interface IOrdersRepository
     {

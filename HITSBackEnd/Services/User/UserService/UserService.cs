@@ -1,29 +1,28 @@
 using HITSBackEnd.DataBaseContext;
 using HITSBackEnd.DataValidation;
 using HITSBackEnd.Dto.UserDTO;
+using HITSBackEnd.Exceptions;
 using HITSBackEnd.Models.AccountModels;
-using HITSBackEnd.Models.DishesModels;
 using HITSBackEnd.Repository.UserRepository;
 using HITSBackEnd.Services.UserRepository;
-using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace HITSBackEnd.Repository.User.UserRepository
+namespace HITSBackEnd.Services.User.UserService
 {
-    public class UserRepository : IUserRepository
+    public class UserService : IUserService
     {
         private readonly AppDbContext _db;
-        private TokenGenerator _tokenGenerator;
-        private UserInfoValidator _userInfoValidator;
-        private AddressValidator _addressValidator;
+        private readonly TokenGenerator _tokenGenerator;
+        private readonly AddressValidator _addressValidator;
+        private readonly RedisRepository _redisRepository;
 
-        public UserRepository(AppDbContext db, TokenGenerator tokenGenerator, UserInfoValidator userInfoValidator, AddressValidator addressValidator)
+        public UserService(AppDbContext db, TokenGenerator tokenGenerator, AddressValidator addressValidator, RedisRepository redisRepository)
         {
             _db = db;
             _tokenGenerator = tokenGenerator;
-            _userInfoValidator = userInfoValidator;
             _addressValidator = addressValidator;
+            _redisRepository = redisRepository;
         }
 
         public bool IsUniqueUser(string email)
@@ -31,65 +30,69 @@ namespace HITSBackEnd.Repository.User.UserRepository
             return _db.Users.Any(user => user.Email == email);
         }
 
-        public async Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
+        public async Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDto)
         {
-            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == loginRequestDTO.Email);
+            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == loginRequestDto.Email);
 
-            if (user == null || !PasswordVerificator.VerifyPassword(user.Password, loginRequestDTO.Password))
+            if (user == null || !PasswordVerificator.VerifyPassword(user.Password, loginRequestDto.Password))
             {
                 throw new BadRequestException("Неверный email или пароль");
             }
             RegistrationLoginResponseDTO response = new RegistrationLoginResponseDTO
             {
-                Token = _tokenGenerator.GenerateToken(loginRequestDTO.Email)
+                Token = _tokenGenerator.GenerateToken(loginRequestDto.Email)
             };
             return response;
         }
 
-        public async Task<RegistrationLoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO)
+        public async Task<RegistrationLoginResponseDTO> Register(RegistrationRequestDTO registrationRequestDto)
         {
-            if (IsUniqueUser(registrationRequestDTO.Email))
+            if (IsUniqueUser(registrationRequestDto.Email))
             {
                 throw new BadRequestException("Пользователь с таким email уже существует");
             }
 
-            if (!_userInfoValidator.ValidatePhoneNumber(registrationRequestDTO.PhoneNumber))
+            if (!UserInfoValidator.ValidatePhoneNumber(registrationRequestDto.PhoneNumber))
             {
                 throw new BadRequestException("Неверный формат телефона");
             }
 
-            var passwordValidation = _userInfoValidator.ValidatePassword(registrationRequestDTO.Password);
+            var passwordValidation = UserInfoValidator.ValidatePassword(registrationRequestDto.Password);
             if (passwordValidation != "")
             {
                 throw new BadRequestException(passwordValidation);
             }
 
-            if (!_userInfoValidator.ValidateBirthDate(registrationRequestDTO.BirthDate))
+            if (!UserInfoValidator.ValidateBirthDate(registrationRequestDto.BirthDate))
             {
                 throw new BadRequestException("Нереалистичная дата рождения");
             }
-            if (!_addressValidator.isAddressExist(registrationRequestDTO.Address))
+            /*if (!_addressValidator.isAddressExist(registrationRequestDTO.Address))
             {
                 throw new NotFoundException("Такого адресса не существует");
+            }*/
+            if (!UserInfoValidator.ValidateEmail((registrationRequestDto.Email)))
+            {
+                throw new BadRequestException("Неправильный формат email адреса");
             }
 
             var newUser = new UsersTable
             {
                 Id = Guid.NewGuid(),
-                FullName = registrationRequestDTO.FullName,
-                Email = registrationRequestDTO.Email,
-                Password = HashPassword(registrationRequestDTO.Password),
-                Gender = registrationRequestDTO.Gender,
-                Address = registrationRequestDTO.Address,
-                BirthDate = registrationRequestDTO.BirthDate,
-                PhoneNumber = registrationRequestDTO.PhoneNumber,
+                FullName = registrationRequestDto.FullName,
+                Email = registrationRequestDto.Email,
+                Password = HashPassword(registrationRequestDto.Password),
+                Gender = registrationRequestDto.Gender,
+                Address = registrationRequestDto.Address,
+                BirthDate = registrationRequestDto.BirthDate,
+                PhoneNumber = registrationRequestDto.PhoneNumber,
             };
 
             await _db.Users.AddAsync(newUser);
             await _db.SaveChangesAsync();
-            RegistrationLoginResponseDTO response = new RegistrationLoginResponseDTO
+            var response = new RegistrationLoginResponseDTO
             {
-                Token = _tokenGenerator.GenerateToken(registrationRequestDTO.Email)
+                Token = _tokenGenerator.GenerateToken(registrationRequestDto.Email)
             };
             return response;
         }
@@ -134,11 +137,7 @@ namespace HITSBackEnd.Repository.User.UserRepository
                 throw new BadRequestException("Токен не валиден");
             }
 
-            BlackListTokenTable newToken = new BlackListTokenTable();
-            newToken.Token = token;
-            newToken.userEmail = email;
-            await _db.BlackListTokens.AddAsync(newToken);
-            await _db.SaveChangesAsync();
+            await _redisRepository.AddTokenBlackList(token);
         }
 
         public async Task EditUserInfo(EditUserInfoRequestDTO userUpdateData, string email)
@@ -151,35 +150,39 @@ namespace HITSBackEnd.Repository.User.UserRepository
 
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
-            user.FullName = userUpdateData.FullName ?? user.FullName;
-            user.Gender = userUpdateData.Gender ?? user.Gender;
-
-            if (userUpdateData.AddressId != null)
+            if (user != null)
             {
-                if (!_addressValidator.isAddressExist((Guid)userUpdateData.AddressId))
+                user.FullName = userUpdateData.FullName ?? user.FullName;
+                user.Gender = userUpdateData.Gender ?? user.Gender;
+
+                if (userUpdateData.AddressId != null)
                 {
-                    throw new NotFoundException("Адрес не существует");
-                }
-                user.Address = (Guid)userUpdateData.AddressId;
-            }
+                    if (!_addressValidator.isAddressExist((Guid)userUpdateData.AddressId))
+                    {
+                        throw new NotFoundException("Адрес не существует");
+                    }
 
-            if (userUpdateData.BirthDate != null)
-            {
-                if (!_userInfoValidator.ValidateBirthDate(userUpdateData.BirthDate))
+                    user.Address = (Guid)userUpdateData.AddressId;
+                }
+
+                if (!UserInfoValidator.ValidateBirthDate(userUpdateData.BirthDate))
                 {
                     throw new BadRequestException("Нереалистичная дата рождения");
                 }
+
                 user.BirthDate = userUpdateData.BirthDate;
+
+                if (userUpdateData.PhoneNumber != null)
+                {
+                    if (!UserInfoValidator.ValidatePhoneNumber(userUpdateData.PhoneNumber))
+                    {
+                        throw new BadRequestException("Неверный формат номера телефона");
+                    }
+
+                    user.PhoneNumber = userUpdateData.PhoneNumber;
+                }
             }
 
-            if (userUpdateData.PhoneNumber != null)
-            {
-                if (!_userInfoValidator.ValidatePhoneNumber(userUpdateData.PhoneNumber))
-                {
-                    throw new BadRequestException("Неверный формат номера телефона");
-                }
-                user.PhoneNumber = userUpdateData.PhoneNumber;
-            }
             await _db.SaveChangesAsync();
         }
     }

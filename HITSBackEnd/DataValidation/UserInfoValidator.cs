@@ -5,15 +5,15 @@ namespace HITSBackEnd.DataValidation
     public class UserInfoValidator
     {
 
-        public bool ValidatePhoneNumber(string phoneNumber)
+        public static bool ValidatePhoneNumber(string phoneNumber)
         {
-            string pattern = @"^(?:\+7\d{10}|\b8\d{10}\b)$";
+            const string pattern = @"^(?:\+7\d{10}|\b8\d{10}\b)$";
 
-            bool isValid = Regex.IsMatch(phoneNumber, pattern);
+            var isValid = Regex.IsMatch(phoneNumber, pattern);
 
             return isValid;
         }
-        public string ValidatePassword(string password)
+        public static string ValidatePassword(string password)
         {
             if (password.Length < 6)
             {
@@ -42,11 +42,20 @@ namespace HITSBackEnd.DataValidation
 
             return "";
         }
-        public bool ValidateBirthDate(DateTime birthDate)
+        public static bool ValidateBirthDate(DateTime birthDate)
         {
             var minDate = DateTime.UtcNow.AddYears(-130);
             var maxDate = DateTime.UtcNow;
             return birthDate <= maxDate && birthDate >= minDate;
+        }
+
+        public static bool ValidateEmail(string email)
+        {
+            const string pattern = @"([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)";
+
+            var isValid = Regex.IsMatch(email, pattern);
+
+            return isValid;
         }
     }
 }

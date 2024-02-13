@@ -1,12 +1,12 @@
 ﻿using HITSBackEnd.DataBaseContext;
 using HITSBackEnd.DataValidation;
 using HITSBackEnd.Dto.OrderDTO;
+using HITSBackEnd.Exceptions;
 using HITSBackEnd.Models.OrdersModels;
-using HITSBackEnd.Services.Adresses;
-using HITSBackEnd.Swagger;
+using HITSBackEnd.Services.Order;
 using Microsoft.EntityFrameworkCore;
 
-namespace HITSBackEnd.Services.Orders
+namespace HITSBackEnd.Services.Order
 {
     public class OrdersRepository : IOrdersRepository
     {

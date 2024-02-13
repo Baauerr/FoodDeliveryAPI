@@ -1,7 +1,6 @@
-﻿using HITSBackEnd.Swagger;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace HITSBackEnd.Errors
+namespace HITSBackEnd.Exceptions
 {
     public class ExceptionsMiddleware: IMiddleware
     {

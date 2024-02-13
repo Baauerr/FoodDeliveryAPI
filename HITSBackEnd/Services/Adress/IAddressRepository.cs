@@ -1,7 +1,7 @@
 ﻿using HITSBackEnd.Dto.AdressDTO;
 using HITSBackEnd.Models.AddressModels;
 
-namespace HITSBackEnd.Services.Adresses
+namespace HITSBackEnd.Services.Adress
 {
     public interface IAddressRepository
     {

@@ -1,12 +1,11 @@
 ﻿using HITSBackEnd.DataBaseContext;
 using HITSBackEnd.Dto.DishDTO;
+using HITSBackEnd.Exceptions;
 using HITSBackEnd.Models.DishesModels;
-using HITSBackEnd.Swagger;
+using HITSBackEnd.Services.Dishes;
 using Microsoft.EntityFrameworkCore;
-using System;
-using static Azure.Core.HttpHeader;
 
-namespace HITSBackEnd.Services.Dishes
+namespace HITSBackEnd.Services.Dish
 {
     public class DishesRepository : IDishesRepository
     {
@@ -80,18 +79,20 @@ namespace HITSBackEnd.Services.Dishes
                 allDishes = allDishes.Where(d => categories.Contains(d.Category));
             }
 
+            if (page <= 0)
+            {
+                page = 1;
+            }
+
             allDishes = SortDishes(allDishes, sorting);
 
             const int sizeOfPage = 5;
-            int countOfPages = (int)Math.Ceiling((double)allDishes.Count() / sizeOfPage);
-            int lowerBound = 0;
-            int upperBound = 0;
+            var countOfPages = (int)Math.Ceiling((double)allDishes.Count() / sizeOfPage);
             if (page <= countOfPages)
             {
-                lowerBound = page == 1 ? 0 : (page - 1) * sizeOfPage;
+                var lowerBound = page == 1 ? 0 : (page - 1) * sizeOfPage;
                 if (page < countOfPages)
                 {
-                    upperBound = lowerBound + sizeOfPage;
                     allDishes = allDishes.Skip(lowerBound).Take(sizeOfPage);
                 }
                 else
@@ -104,19 +105,22 @@ namespace HITSBackEnd.Services.Dishes
                 throw new BadRequestException("Такой страницы нет");
             }
 
-            PaginationDTO paginationDTO = new PaginationDTO();
+            var paginationDto = new PaginationDto
+            {
+                Current = page,
+                Count = countOfPages,
+                Size = sizeOfPage
+            };
 
-            paginationDTO.Current = page;
-            paginationDTO.Count = countOfPages;
-            paginationDTO.Size = sizeOfPage;
-
-            DishPageResponseDTO pageDTO = new DishPageResponseDTO();
-            pageDTO.Dishes = allDishes;
-            pageDTO.Pagination = paginationDTO;
-            return pageDTO;
+            var pageDto = new DishPageResponseDTO
+            {
+                Dishes = allDishes,
+                Pagination = paginationDto
+            };
+            return pageDto;
         }
 
-        private IQueryable<DishTable> SortDishes(IQueryable<DishTable> allDishes, SortingTypes sorting)
+        private static IQueryable<DishTable> SortDishes(IQueryable<DishTable> allDishes, SortingTypes sorting)
         {
             switch (sorting)
             {
@@ -159,10 +163,10 @@ namespace HITSBackEnd.Services.Dishes
                 throw new ForbiddenException("Блюдо ещё не было заказано пользователем");
             }
 
-            var dishToRate = await _db.DishesRating.FirstOrDefaultAsync(dish => dish.DishId == dishId);
+            var dishToRate = await _db.DishesRating.FirstOrDefaultAsync(dish => dish.DishId == dishId && dish.UserEmail == userEmail);
             if (dishToRate == null)
             {
-                RatingTable newRate = new RatingTable()
+                var newRate = new RatingTable()
                 {
                     DishId = dishId,
                     UserEmail = userEmail,
@@ -175,14 +179,14 @@ namespace HITSBackEnd.Services.Dishes
                 dishToRate.Value = rate;
             }
             await _db.SaveChangesAsync();
-            await updateDishRate(dishId);
+            await UpdateDishRate(dishId);
 
         }
-        private async Task updateDishRate(Guid DishId)
+        private async Task UpdateDishRate(Guid dishId)
         {
-            var dish = await _db.Dishes.FirstOrDefaultAsync(dish => dish.Id == DishId);
+            var dish = await _db.Dishes.FirstOrDefaultAsync(dish => dish.Id == dishId);
             var averageValue = _db.DishesRating
-                .Where(r => r.DishId == DishId)
+                .Where(r => r.DishId == dishId)
                 .Average(r => r.Value);
             dish.rating = averageValue;
             await _db.SaveChangesAsync();

@@ -12,7 +12,6 @@ namespace HITSBackEnd.DataBaseContext
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<UsersTable> Users { get; set; }
-        public DbSet<BlackListTokenTable> BlackListTokens { get; set; }
 
         public DbSet<DishTable> Dishes { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿
-namespace HITSBackEnd.Swagger
+namespace HITSBackEnd.Exceptions
 {
     public class ErrorResponseModel
     {

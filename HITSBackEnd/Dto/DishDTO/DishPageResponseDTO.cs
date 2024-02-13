@@ -3,6 +3,6 @@
     public class DishPageResponseDTO
     {
         public IQueryable Dishes { get; set; }
-        public PaginationDTO Pagination { get; set; }
+        public PaginationDto Pagination { get; set; }
     }
 }

@@ -2,11 +2,11 @@
 using HITSBackEnd.Dto.DishDTO;
 using HITSBackEnd.Models.DishesModels;
 using HITSBackEnd.Services.Dishes;
-using HITSBackEnd.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HITSBackEnd.Exceptions;
 
 namespace HITSBackEnd.Controllers
 {

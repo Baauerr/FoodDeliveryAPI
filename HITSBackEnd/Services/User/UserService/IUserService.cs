@@ -2,7 +2,7 @@
 
 namespace HITSBackEnd.Services.UserRepository
 {
-    public interface IUserRepository
+    public interface IUserService
     {
         bool IsUniqueUser(string email);
         public Task<RegistrationLoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);

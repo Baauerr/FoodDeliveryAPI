@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace HITSBackEnd.Repository.Adress
+namespace HITSBackEnd.Services.Adress
 {
     public class AddressesHelper
     {
